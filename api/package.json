@@ -1,0 +1,22 @@
+{
+  "name": "gymart-api",
+  "version": "1.0.0",
+  "description": "GymArt API - Express backend",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": ["express", "api", "gym", "fitness"],
+  "author": "sergeimlk",
+  "license": "MIT"
+}
