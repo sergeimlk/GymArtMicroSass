@@ -2,123 +2,138 @@
 
 import { useState } from 'react';
 
-interface HealthResponse {
-  status: string;
-  message: string;
-  timestamp: string;
-  database?: {
-    connected: boolean;
-    message: string;
-  };
+interface ApiResponse {
+  status?: string;
+  message?: string;
+  timestamp?: string;
+  error?: string;
 }
 
 export default function Home() {
-  const [healthData, setHealthData] = useState<HealthResponse | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [response, setResponse] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const testApiConnection = async () => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
-    setHealthData(null);
+    setResponse(null);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-      const response = await fetch(`${apiUrl}/api/health`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiUrl}/api/health`);
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
-
-      const data: HealthResponse = await response.json();
-      setHealthData(data);
+      
+      const data = await res.json();
+      setResponse(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Connection failed');
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="container">
-      <div className="card">
-        <h1
-          style={{
-            fontSize: '2.5rem',
-            marginBottom: '1rem',
-            textAlign: 'center',
-          }}
-        >
-          🏋️ GymArt App
-        </h1>
-        <p style={{ textAlign: 'center', marginBottom: '2rem', color: '#666' }}>
-          Fullstack application with Express API, Next.js client, and PostgreSQL
-        </p>
-
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <button
-            className="button"
-            onClick={testApiConnection}
-            disabled={loading}
-          >
-            {loading ? 'Testing...' : 'Test API Connection'}
-          </button>
-        </div>
-
-        {error && (
-          <div
-            style={{
-              background: '#fed7d7',
-              color: '#c53030',
-              padding: '1rem',
-              borderRadius: '8px',
-              marginBottom: '1rem',
-            }}
-          >
-            <strong>Error:</strong> {error}
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-6 py-16">
+        <div className="max-w-2xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12 animate-glass-searchbar-in">
+            <h1 className="text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
+              🏋️ GymArt
+            </h1>
           </div>
-        )}
 
-        {healthData && (
-          <div
-            style={{
-              background: healthData.status === 'ok' ? '#c6f6d5' : '#fed7d7',
-              color: healthData.status === 'ok' ? '#2f855a' : '#c53030',
-              padding: '1rem',
-              borderRadius: '8px',
-              marginBottom: '1rem',
-            }}
-          >
-            <h3>Health Check Result:</h3>
-            <pre
-              style={{
-                background: 'rgba(0,0,0,0.1)',
-                padding: '1rem',
-                borderRadius: '4px',
-                marginTop: '0.5rem',
-                overflow: 'auto',
-              }}
-            >
-              {JSON.stringify(healthData, null, 2)}
-            </pre>
+          {/* Main Card */}
+          <div className="bg-gradient-card backdrop-blur-sm border border-border rounded-lg shadow-card p-8">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-semibold text-card-foreground mb-4">
+                Test de connexion API
+              </h2>
+              <p className="text-muted-foreground">
+                Testez la connexion avec votre backend en un clic
+              </p>
+            </div>
+
+            {/* Test Button */}
+            <div className="flex justify-center mb-8">
+              <button
+                onClick={testApiConnection}
+                disabled={isLoading}
+                className={`
+                  group relative px-8 py-4 rounded-lg font-medium text-primary-foreground
+                  transition-all duration-300 transform
+                  ${isLoading 
+                    ? 'bg-muted cursor-not-allowed scale-95' 
+                    : 'bg-gradient-primary hover:shadow-soft hover:scale-105 active:scale-95'
+                  }
+                  focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
+                `}
+              >
+                {isLoading ? (
+                  <div className="flex items-center space-x-3">
+                    <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                    <span>Test en cours...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center space-x-2">
+                    <span>🔗</span>
+                    <span>Tester la connexion API</span>
+                  </div>
+                )}
+              </button>
+            </div>
+
+            {/* Response Display */}
+            {(response || error) && (
+              <div className="mt-8 space-y-4">
+                <h3 className="text-lg font-medium text-card-foreground">
+                  Réponse API
+                </h3>
+                
+                {error ? (
+                  <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <span className="text-destructive">❌</span>
+                      <span className="text-destructive font-medium">Erreur de connexion</span>
+                    </div>
+                    <p className="text-destructive/80 text-sm">{error}</p>
+                  </div>
+                ) : (
+                  <div className="bg-success/10 border border-success/20 rounded-lg p-4">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="text-success">✅</span>
+                      <span className="text-success font-medium">Connexion réussie</span>
+                    </div>
+                    <div className="bg-muted rounded-md p-3">
+                      <pre className="text-sm text-muted-foreground overflow-x-auto">
+                        <code>{JSON.stringify(response, null, 2)}</code>
+                      </pre>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Configuration Info */}
+            <div className="mt-8 bg-secondary/50 border border-border rounded-lg p-4">
+              <div className="flex items-start space-x-3">
+                <span className="text-accent text-lg">⚙️</span>
+                <div className="text-sm space-y-1">
+                  <p className="font-medium text-secondary-foreground">Configuration</p>
+                  <p className="text-muted-foreground">
+                    API URL: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}
+                  </p>
+                  <p className="text-muted-foreground">
+                    Endpoint: /api/health
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
-
-        <div
-          style={{
-            marginTop: '2rem',
-            padding: '1rem',
-            background: '#f7fafc',
-            borderRadius: '8px',
-          }}
-        >
-          <h3 style={{ marginBottom: '1rem' }}>🚀 Getting Started</h3>
-          <ol style={{ paddingLeft: '1.5rem' }}>
-            <li>Make sure the API server is running on port 3001</li>
-            <li>Ensure PostgreSQL database is connected</li>
-            <li>Click "Test API Connection" to verify the health endpoint</li>
-            <li>Check the JSON response for database connectivity status</li>
-          </ol>
         </div>
       </div>
     </div>
