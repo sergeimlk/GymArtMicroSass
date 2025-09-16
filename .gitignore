@@ -1,0 +1,30 @@
+# Dépendances
+node_modules/
+
+# Secrets
+.env
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# Caches
+.cache/
+.next/
+.vite/
+coverage/
+
+# Artefacts de build
+dist/
+build/
+
+# OS
+.DS_Store
+
+# Frontend & Backend
+client/.next/
+client/out/
+client/dist/
+api/dist/
+api/build/
