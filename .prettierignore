@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build outputs
+.next/
+*/build/
+*/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Database
+*.sql
+
+# Docker
+Dockerfile*
+
+# Git
+.git/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,111 @@
+# Configuration Lefthook optimisée pour GymArt
+# Automatise la qualité de code et les vérifications avant commit/push
+
+pre-commit:
+  parallel: true  # Exécute les commandes en parallèle pour plus de rapidité
+  commands:
+    # Formatage automatique avec Prettier
+    prettier:
+      glob: "**/*.{js,jsx,ts,tsx,css,md,json,yml,yaml}"
+      run: npx prettier --write {staged_files}
+      stage_fixed: true  # Re-ajoute automatiquement les fichiers corrigés
+      fail_text: "❌ Prettier formatting failed. Please check the output above."
+      
+    # Linting ESLint avec auto-fix pour le client
+    eslint-client:
+      glob: "client/**/*.{js,jsx,ts,tsx}"
+      run: cd client && npx eslint --fix {staged_files}
+      stage_fixed: true
+      fail_text: "❌ ESLint client failed. Please fix the linting errors above."
+      
+    # Vérification TypeScript pour le client
+    typecheck-client:
+      glob: "client/**/*.{ts,tsx}"
+      run: cd client && npx tsc --noEmit
+      fail_text: "❌ TypeScript check failed. Please fix the type errors above."
+      
+    # Vérification de la structure du projet
+    check-structure:
+      glob: "*"
+      run: |
+        if [ ! -d "api" ] || [ ! -d "client" ]; then
+          echo "❌ Structure monorepo manquante (api/ et client/ requis)"
+          exit 1
+        fi
+        echo "✅ Structure monorepo validée"
+
+# Vérification des messages de commit
+commit-msg:
+  commands:
+    commitlint:
+      run: npx commitlint --edit {1}
+      fail_text: |
+        ❌ Message de commit invalide!
+        
+        Format requis: <type>: <description>
+        
+        Types autorisés:
+        - feat: nouvelle fonctionnalité
+        - fix: correction de bug
+        - docs: documentation
+        - style: formatage
+        - refactor: refactoring
+        - test: ajout de tests
+        - chore: maintenance
+        - ci: intégration continue
+        
+        Exemple: feat: add user authentication
+
+# Vérifications avant push
+pre-push:
+  commands:
+    # Tests backend (si disponibles)
+    test-api:
+      run: |
+        if [ -f "api/package.json" ] && grep -q '"test"' api/package.json; then
+          echo "🧪 Exécution des tests backend..."
+          cd api && npm test
+        else
+          echo "ℹ️ Pas de tests backend configurés, skip"
+        fi
+      fail_text: "❌ Tests backend échoués. Corrigez avant de push!"
+      
+    # Build du frontend pour vérifier les erreurs
+    build-client:
+      run: |
+        if [ -f "client/package.json" ]; then
+          echo "🏗️ Vérification du build frontend..."
+          cd client && npm run build
+        else
+          echo "ℹ️ Client package.json non trouvé, skip du build"
+        fi
+      fail_text: "❌ Build client échoué. Corrigez les erreurs avant de push!"
+      
+    # Vérification de la santé de l'API (si elle tourne)
+    api-health:
+      run: |
+        if curl -f -s http://localhost:3001/api/health >/dev/null 2>&1; then
+          echo "✅ API health check: OK"
+        else
+          echo "ℹ️ API non accessible (normal si pas démarrée)"
+        fi
+      
+    # Vérification de la base de données (si Docker tourne)
+    db-health:
+      run: |
+        if docker ps | grep -q postgres; then
+          echo "🔍 Vérification PostgreSQL..."
+          if docker-compose exec -T postgres pg_isready -U postgres -d gymart >/dev/null 2>&1; then
+            echo "✅ PostgreSQL: OK"
+          else
+            echo "⚠️ PostgreSQL non accessible"
+          fi
+        else
+          echo "ℹ️ PostgreSQL non démarré (normal en développement)"
+        fi
+
+# Célébration après commit réussi
+post-commit:
+  commands:
+    celebrate:
+      run: echo "✅ Commit GymArt validé! 🏋️ Code formaté et vérifié automatiquement."
