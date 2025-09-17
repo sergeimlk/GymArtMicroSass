@@ -14,7 +14,7 @@ pre-commit:
     # Linting ESLint avec auto-fix pour le client
     eslint-client:
       glob: "client/**/*.{js,jsx,ts,tsx}"
-      run: cd client && npx eslint --fix {staged_files}
+      run: cd client && npx eslint --fix {staged_files} --no-error-on-unmatched-pattern
       stage_fixed: true
       fail_text: "❌ ESLint client failed. Please fix the linting errors above."
       

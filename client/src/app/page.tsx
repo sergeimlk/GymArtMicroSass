@@ -20,17 +20,21 @@ export default function Home() {
     setResponse(null);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
       const res = await fetch(`${apiUrl}/api/health`);
-      
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      
+
       const data = await res.json();
-      setResponse(data);
+
+      if (!res.ok) {
+        // Pour les erreurs 500, afficher la réponse JSON de l'API
+        setResponse(data);
+      } else {
+        setResponse(data);
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+      setError(
+        err instanceof Error ? err.message : "Impossible de contacter l'API"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -66,9 +70,10 @@ export default function Home() {
                 className={`
                   group relative px-8 py-4 rounded-lg font-medium text-primary-foreground
                   transition-all duration-300 transform
-                  ${isLoading 
-                    ? 'bg-muted cursor-not-allowed scale-95' 
-                    : 'bg-gradient-primary hover:shadow-soft hover:scale-105 active:scale-95'
+                  ${
+                    isLoading
+                      ? 'bg-muted cursor-not-allowed scale-95'
+                      : 'bg-gradient-primary hover:shadow-soft hover:scale-105 active:scale-95'
                   }
                   focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
                 `}
@@ -93,20 +98,38 @@ export default function Home() {
                 <h3 className="text-lg font-medium text-card-foreground">
                   Réponse API
                 </h3>
-                
+
                 {error ? (
                   <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
                     <div className="flex items-center space-x-2 mb-2">
                       <span className="text-destructive">❌</span>
-                      <span className="text-destructive font-medium">Erreur de connexion</span>
+                      <span className="text-destructive font-medium">
+                        Erreur de connexion
+                      </span>
                     </div>
                     <p className="text-destructive/80 text-sm">{error}</p>
+                  </div>
+                ) : response?.status === 'error' ? (
+                  <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="text-destructive">❌</span>
+                      <span className="text-destructive font-medium">
+                        Erreur API (HTTP 500)
+                      </span>
+                    </div>
+                    <div className="bg-muted rounded-md p-3">
+                      <pre className="text-sm text-destructive overflow-x-auto">
+                        <code>{JSON.stringify(response, null, 2)}</code>
+                      </pre>
+                    </div>
                   </div>
                 ) : (
                   <div className="bg-success/10 border border-success/20 rounded-lg p-4">
                     <div className="flex items-center space-x-2 mb-3">
                       <span className="text-success">✅</span>
-                      <span className="text-success font-medium">Connexion réussie</span>
+                      <span className="text-success font-medium">
+                        Connexion réussie
+                      </span>
                     </div>
                     <div className="bg-muted rounded-md p-3">
                       <pre className="text-sm text-muted-foreground overflow-x-auto">
@@ -123,13 +146,14 @@ export default function Home() {
               <div className="flex items-start space-x-3">
                 <span className="text-accent text-lg">⚙️</span>
                 <div className="text-sm space-y-1">
-                  <p className="font-medium text-secondary-foreground">Configuration</p>
-                  <p className="text-muted-foreground">
-                    API URL: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}
+                  <p className="font-medium text-secondary-foreground">
+                    Configuration
                   </p>
                   <p className="text-muted-foreground">
-                    Endpoint: /api/health
+                    API URL:{' '}
+                    {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}
                   </p>
+                  <p className="text-muted-foreground">Endpoint: /api/health</p>
                 </div>
               </div>
             </div>
