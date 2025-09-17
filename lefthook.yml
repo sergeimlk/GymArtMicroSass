@@ -73,12 +73,8 @@ pre-push:
     # Build du frontend pour vérifier les erreurs
     build-client:
       run: |
-        if [ -f "client/package.json" ]; then
-          echo "🏗️ Vérification du build frontend..."
-          cd client && npm run build
-        else
-          echo "ℹ️ Client package.json non trouvé, skip du build"
-        fi
+        echo "🏗️ Vérification du build frontend..."
+        cd client && npm run build
       fail_text: "❌ Build client échoué. Corrigez les erreurs avant de push!"
       
     # Vérification de la santé de l'API (si elle tourne)
