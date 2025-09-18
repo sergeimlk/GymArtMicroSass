@@ -28,3 +28,4 @@ client/out/
 client/dist/
 api/dist/
 api/build/
+.issues.md
