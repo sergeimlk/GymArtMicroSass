@@ -44,8 +44,8 @@ pre-commit:
 # Vérification des messages de commit
 commit-msg:
   commands:
-    commitlint:
-      run: npx commitlint --edit {1}
+    validate-commit:
+      run: node scripts/validate-commit-msg.js {1}
       fail_text: |
         ❌ Message de commit invalide!
 
