@@ -1,5 +1,10 @@
 # 🏋️ GymArt App
 
+[![CI/CD Pipeline](https://github.com/sergeimlk/GymArtMicroSass/actions/workflows/ci.yml/badge.svg)](https://github.com/sergeimlk/GymArtMicroSass/actions/workflows/ci.yml)
+[![Quality Gate](https://img.shields.io/badge/Quality%20Gate-Passing-brightgreen)](https://github.com/sergeimlk/GymArtMicroSass)
+[![Security](https://img.shields.io/badge/Security-Hardened-blue)](./SECURITY.md)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED)](./DOCKER.md)
+
 Infrastructure fullstack avec Express (API), Next.js (client), PostgreSQL (DB), Docker et GitHub Actions.
 
 > **🚀 Pour un démarrage rapide (évaluateurs)**: Consultez le [Guide de Démarrage Rapide](./QUICKSTART.md)
@@ -284,22 +289,52 @@ npm run test:e2e -- --project=chromium
 
 ## 🔄 CI/CD
 
-### GitHub Actions
+### GitHub Actions Pipeline
 
-Le pipeline CI/CD comprend 3 jobs:
+Le pipeline CI/CD automatisé comprend 5 jobs principaux :
 
-1. **Backend**: Lint + Tests API avec PostgreSQL
-2. **Frontend**: Lint + Build Next.js
-3. **Compose**: Validation end-to-end avec Docker
+1. **🔧 Backend Quality Checks**
+   - Linting ESLint + Prettier
+   - Tests unitaires et d'intégration
+   - Audit de sécurité npm
+   - Connexion PostgreSQL validée
+
+2. **🎨 Frontend Quality Checks**
+   - Linting ESLint + TypeScript
+   - Vérification des types TypeScript
+   - Build Next.js optimisé
+   - Audit de sécurité npm
+
+3. **🐳 Docker Integration Tests**
+   - Validation configuration Docker Compose
+   - Build et démarrage des services
+   - Tests de santé des endpoints
+   - Validation end-to-end complète
+
+4. **🔒 Security Scanning** (PR uniquement)
+   - Scan de vulnérabilités avec Trivy
+   - Analyse SARIF pour GitHub Security
+
+5. **⚡ Performance Tests** (PR uniquement)
+   - Tests de charge avec Apache Bench
+   - Validation des temps de réponse
 
 ### Déclenchement
 
-- Push sur `main` ou `develop`
-- Pull Requests vers `main` ou `develop`
+- **Push** sur `main` ou `dev`
+- **Pull Requests** vers `main` ou `dev`
+- **Sécurité et performance** : PR uniquement
 
 ### Statut requis
 
-Tous les jobs doivent passer pour permettre le merge.
+✅ Tous les jobs doivent passer pour permettre le merge
+🚫 Échec d'un job = merge bloqué automatiquement
+
+### Badges de statut
+
+- [![CI/CD Pipeline](https://github.com/sergeimlk/GymArtMicroSass/actions/workflows/ci.yml/badge.svg)](https://github.com/sergeimlk/GymArtMicroSass/actions/workflows/ci.yml) - Statut du pipeline
+- [![Quality Gate](https://img.shields.io/badge/Quality%20Gate-Passing-brightgreen)](https://github.com/sergeimlk/GymArtMicroSass) - Qualité du code
+- [![Security](https://img.shields.io/badge/Security-Hardened-blue)](./SECURITY.md) - Sécurité renforcée
 
 ## 🏗️ Architecture
 
