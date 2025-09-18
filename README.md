@@ -2,6 +2,8 @@
 
 Infrastructure fullstack avec Express (API), Next.js (client), PostgreSQL (DB), Docker et GitHub Actions.
 
+> **🚀 Pour un démarrage rapide (évaluateurs)**: Consultez le [Guide de Démarrage Rapide](./QUICKSTART.md)
+
 ## 📋 Table des matières
 
 - [Prérequis](#prérequis)
@@ -26,22 +28,33 @@ Infrastructure fullstack avec Express (API), Next.js (client), PostgreSQL (DB), 
 
 ## 🚀 Installation
 
-### Installation rapide avec Docker
+### ⚡ Démarrage rapide (Docker - Recommandé)
 
 ```bash
-# Cloner le repository
+# 1. Cloner le repository
 git clone https://github.com/sergeimlk/GymArtMicroSass.git
-cd gymart-app
+cd GymArtMicroSass
 
-# Configurer l'environnement
+# 2. Configurer l'environnement
 cp .env.example .env
 
-# Démarrer tous les services
+# 3. Démarrer tous les services
 docker compose up --build -d
 
-# Vérifier le statut
+# 4. Vérifier que tout fonctionne
 curl http://localhost:3001/api/health
+curl http://localhost:3000
+
+# 5. Voir les logs (optionnel)
+docker compose logs -f
 ```
+
+**🎯 URLs après démarrage**:
+- **Frontend**: http://localhost:3000
+- **API**: http://localhost:3001
+- **Health Check**: http://localhost:3001/api/health
+
+### Installation rapide avec Docker (ancienne méthode)
 
 ### Installation locale pour développement
 
@@ -76,24 +89,64 @@ Copiez `.env.example` vers `.env` et ajustez selon vos besoins:
 
 ## 🐳 Commandes Docker Compose
 
+### Commandes de base
+
 ```bash
-# Construire les images
+# Construire les images (première fois ou après modifications)
 docker compose build
 
-# Démarrer les services
+# Construire sans cache (si problèmes)
+docker compose build --no-cache
+
+# Démarrer les services en arrière-plan
 docker compose up -d
 
-# Voir les logs
+# Démarrer avec rebuild automatique
+docker compose up --build -d
+
+# Voir les logs en temps réel
 docker compose logs -f
 
-# Arrêter les services
+# Logs d'un service spécifique
+docker compose logs -f api
+docker compose logs -f client
+docker compose logs -f postgres
+```
+
+### Commandes de maintenance
+
+```bash
+# Arrêter les services (garde les volumes)
 docker compose down
 
-# Nettoyer (avec volumes)
+# Arrêter et supprimer les volumes (⚠️ perte de données)
 docker compose down -v
+
+# Redémarrer un service spécifique
+docker compose restart api
+
+# Vérifier l'état des services
+docker compose ps
 
 # Vérifier la configuration
 docker compose config
+
+# Nettoyer complètement (images, volumes, networks)
+docker compose down -v --rmi all --remove-orphans
+```
+
+### Commandes de debug
+
+```bash
+# Entrer dans un conteneur
+docker compose exec api bash
+docker compose exec postgres psql -U postgres -d gymart
+
+# Voir les ressources utilisées
+docker compose top
+
+# Inspecter un service
+docker compose exec api env
 ```
 
 ## 💻 Développement local
@@ -139,43 +192,88 @@ npm run docker:logs   # View logs
 
 ### Exemples de réponses
 
-**GET /api/health**
+**GET /api/health** (Succès)
 ```json
 {
   "status": "ok",
-  "message": "Service is healthy",
+  "message": "API connected to database!"
+}
+```
+
+**GET /api/health** (Erreur)
+```json
+{
+  "status": "error",
+  "message": "Database connection failed"
+}
+```
+
+**GET /api/test**
+```json
+{
+  "ok": true,
+  "message": "API is working correctly!",
   "timestamp": "2024-01-15T10:30:00.000Z",
-  "database": {
-    "connected": true,
-    "message": "Database connection successful",
-    "details": {
-      "host": "postgres",
-      "port": 5432,
-      "database": "gymart"
-    }
-  }
+  "endpoint": "/api/test"
+}
+```
+
+**GET /** (Root)
+```json
+{
+  "name": "GymArt API",
+  "version": "1.0.0",
+  "description": "Backend API for GymArt application",
+  "endpoints": ["/api/test", "/api/health"]
 }
 ```
 
 ## 🧪 Tests
 
-### Tests API
+### Tests API (Jest)
 
 ```bash
-# Exécuter les tests
+# Exécuter les tests API
 npm run test --workspace=api
 
 # Tests en mode watch
 npm run test:watch --workspace=api
+
+# Tests avec couverture
+npm run test:coverage --workspace=api
+```
+
+### Tests E2E (Playwright)
+
+```bash
+# Installer Playwright (première fois)
+cd client && npx playwright install
+
+# Exécuter les tests E2E
+npm run test:e2e --workspace=client
+
+# Tests E2E en mode UI
+npm run test:e2e:ui --workspace=client
+
+# Tests sur navigateurs spécifiques
+npm run test:e2e -- --project=chromium
 ```
 
 ### Tests d'intégration
 
-Les tests vérifient:
-- ✅ Endpoints de base (`/`, `/api/test`)
-- ✅ Health check avec DB
-- ✅ Gestion d'erreurs 404
-- ✅ Format des réponses JSON
+**Tests API (16 tests)**:
+- ✅ Endpoints de base (`/`, `/api/test`, `/api/health`)
+- ✅ Connexion base de données PostgreSQL
+- ✅ Headers de sécurité (Helmet.js)
+- ✅ CORS et rate limiting
+- ✅ Gestion d'erreurs et format JSON
+- ✅ Performance sous charge
+
+**Tests E2E (48 tests sur 3 navigateurs)**:
+- ✅ Intégration frontend ↔ backend
+- ✅ Interception des appels API
+- ✅ Tests de bout en bout complets
+- ✅ Compatibilité multi-navigateurs (Chrome, Firefox, Safari)
 
 ## 🔄 CI/CD
 
@@ -271,40 +369,94 @@ Les hooks Husky vérifient automatiquement:
 - ✅ Formatage (Prettier)
 - ✅ Messages de commit (commitlint)
 
+## 🔒 Sécurité
+
+### Mesures de sécurité implémentées
+
+- ✅ **Helmet.js**: Headers de sécurité (CSP, X-Frame-Options, X-Content-Type-Options)
+- ✅ **Rate Limiting**: 1000 req/15min (dev), 100 req/15min (prod)
+- ✅ **CORS strict**: Origines configurables par environnement
+- ✅ **Gestion d'erreurs sécurisée**: Pas de stack traces en production
+- ✅ **Conteneurs non-root**: Utilisateurs dédiés (nodeuser:1001, nextjs:1001)
+- ✅ **Variables d'environnement**: Pas de secrets hardcodés
+
+### Audit de sécurité
+
+```bash
+# Audit des dépendances
+npm audit
+npm audit fix
+
+# Scan de sécurité avec GitGuardian (si configuré)
+git push # déclenche automatiquement le scan
+```
+
 ## 🔧 Dépannage
 
 ### Problèmes courants
 
-**Services ne démarrent pas**
+**🚫 Services ne démarrent pas**
 ```bash
-# Vérifier les logs
+# 1. Vérifier les logs pour identifier le problème
 docker compose logs
 
-# Reconstruire les images
+# 2. Vérifier l'état des services
+docker compose ps
+
+# 3. Reconstruire les images sans cache
 docker compose build --no-cache
 
-# Nettoyer et redémarrer
+# 4. Nettoyer complètement et redémarrer
 docker compose down -v
 docker compose up --build -d
+
+# 5. Vérifier les ports disponibles
+netstat -tulpn | grep -E ':(3000|3001|5432)'
 ```
 
-**Base de données inaccessible**
+**🗄️ Base de données inaccessible**
 ```bash
-# Vérifier le statut PostgreSQL
+# 1. Vérifier le statut PostgreSQL
 docker compose exec postgres pg_isready -U postgres
 
-# Voir les logs DB
+# 2. Voir les logs de la base de données
 docker compose logs postgres
 
-# Tester la connexion
+# 3. Tester la connexion via l'API
 curl http://localhost:3001/api/health
+
+# 4. Se connecter directement à PostgreSQL
+docker compose exec postgres psql -U postgres -d gymart
+
+# 5. Vérifier les variables d'environnement
+docker compose exec api env | grep -E 'DB_|POSTGRES_'
 ```
 
-**Erreurs de build Next.js**
+**⚛️ Erreurs de build Next.js**
 ```bash
-# Nettoyer le cache
+# 1. Nettoyer le cache Next.js
 rm -rf client/.next client/node_modules
-cd client && npm install && npm run build
+
+# 2. Réinstaller les dépendances
+cd client && npm install
+
+# 3. Tester le build localement
+cd client && npm run build
+
+# 4. Vérifier les variables d'environnement
+cat client/.env.local
+```
+
+**🔧 Problèmes de performance**
+```bash
+# Voir l'utilisation des ressources
+docker compose top
+
+# Statistiques en temps réel
+docker stats
+
+# Nettoyer les images inutilisées
+docker system prune -f
 ```
 
 ### Ports utilisés
@@ -327,11 +479,21 @@ docker compose logs -f postgres
 
 ## 📚 Ressources
 
+### Documentation du projet
+
+- 📖 **[Documentation API complète](./API_DOCUMENTATION.md)** - Endpoints, exemples, codes d'erreur
+- 🐳 **[Guide Docker](./DOCKER.md)** - Configuration et déploiement
+- 🔒 **[Guide Sécurité](./SECURITY.md)** - Mesures de sécurité implémentées
+- 🧹 **[Guide Linting](./LINTING.md)** - Configuration ESLint et Prettier
+
+### Ressources externes
+
 - [Documentation Next.js](https://nextjs.org/docs)
 - [Express.js Guide](https://expressjs.com/)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 - [Docker Compose Reference](https://docs.docker.com/compose/)
 - [Conventional Commits](https://conventionalcommits.org/)
+- [Playwright Testing](https://playwright.dev/)
 
 ---
 
