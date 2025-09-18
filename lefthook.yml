@@ -49,19 +49,32 @@ commit-msg:
       fail_text: |
         ❌ Message de commit invalide!
 
-        Format requis: <type>: <description>
+        Format OBLIGATOIRE: <emoji><type>: <description>
 
-        Types autorisés:
-        - feat: nouvelle fonctionnalité
-        - fix: correction de bug
-        - docs: documentation
-        - style: formatage
-        - refactor: refactoring
-        - test: ajout de tests
-        - chore: maintenance
-        - ci: intégration continue
+        Types autorisés avec emojis:
+        - 🚀feat: nouvelle fonctionnalité
+        - 🐛fix: correction de bug
+        - 📄docs: documentation
+        - 💅style: formatage
+        - ♻️refactor: refactoring
+        - 🧪test: ajout de tests
+        - 🔧chore: maintenance
+        - 👷ci: intégration continue
+        - ⚡perf: amélioration de performance
+        - 📦build: build/dépendances
+        - ⏪revert: annulation de commit
 
-        Exemple: feat: add user authentication
+        Exemples VALIDES:
+        ✅ 🚀feat: add user authentication
+        ✅ 🐛fix: resolve database connection
+        ✅ 📄docs: update API documentation
+
+        Exemples INVALIDES:
+        ❌ feat: add user authentication (manque emoji)
+        ❌ 🚀 feat: add user authentication (espace)
+        ❌ 🚀feat: Add user authentication (majuscule)
+
+        Voir COMMIT_CONVENTIONS.md pour plus de détails.
 
 # Vérifications avant push
 pre-push:
