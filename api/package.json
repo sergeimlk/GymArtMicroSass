@@ -4,9 +4,9 @@
   "description": "GymArt API - Express backend",
   "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "test": "jest",
+    "dev": "nodemon src/index.js",
+    "test": "jest --forceExit",
     "test:watch": "jest --watch",
     "test:integration": "jest --testPathPattern=integration",
     "test:unit": "jest --testPathPattern=test.js",
