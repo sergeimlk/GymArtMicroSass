@@ -151,9 +151,13 @@ app.use('*', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📍 API available at http://localhost:${PORT}`);
-  console.log(`🛡️ Security: Helmet, CORS, Rate limiting enabled`);
-  console.log(`🔒 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📍 API available at http://localhost:${PORT}`);
+    console.log('🛡️ Security: Helmet, CORS, Rate limiting enabled');
+    console.log(`🔒 Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
+
+module.exports = app;
