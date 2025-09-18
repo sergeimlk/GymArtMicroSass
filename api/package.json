@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "jest --forceExit",
+    "test": "jest --testPathIgnorePatterns=integration --forceExit",
     "test:watch": "jest --watch",
     "test:integration": "jest --testPathPattern=integration",
     "test:unit": "jest --testPathPattern=test.js",
