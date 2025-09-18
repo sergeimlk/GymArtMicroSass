@@ -1,7 +1,30 @@
 {
+  "name": "gymart-monorepo",
+  "version": "1.0.0",
+  "description": "GymArt fullstack application with Express API, Next.js client, and PostgreSQL",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=api\" \"npm run dev --workspace=client\"",
+    "build": "npm run build --workspace=client && npm run build --workspace=api",
+    "test": "npm run test --workspace=api",
+    "test:integration": "npm run test:integration --workspace=api",
+    "test:e2e": "npm run test:e2e --workspace=client",
+    "test:all": "npm run test:all --workspace=api && npm run test:e2e --workspace=client",
+    "lint": "npm run lint --workspace=api && npm run lint --workspace=client",
+    "lint:fix": "npm run lint:fix --workspace=api && npm run lint:fix --workspace=client",
+    "format": "npm run format --workspace=api && npm run format --workspace=client",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
+  },
+  "workspaces": [
+    "api",
+    "client"
+  ],
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
+    "concurrently": "^8.2.2",
     "lefthook": "^1.13.0",
     "prettier": "^3.6.2"
   }
