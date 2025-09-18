@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const morgan = require('morgan');
 const { Pool } = require('pg');
 require('dotenv').config();
@@ -26,10 +28,59 @@ pool.connect((err, client, release) => {
   }
 });
 
-// Middleware
-app.use(cors());
-app.use(morgan('combined'));
-app.use(express.json());
+// Security middleware - MUST be first
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+      },
+    },
+    crossOriginEmbedderPolicy: false, // Pour compatibilité développement
+  })
+);
+
+// Rate limiting - Protection contre les attaques par déni de service
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: process.env.NODE_ENV === 'production' ? 100 : 1000, // Limite par IP
+  message: {
+    error: 'Trop de requêtes depuis cette IP, réessayez dans 15 minutes.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(limiter);
+
+// CORS strict - Seulement les origines autorisées
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',')
+  : ['http://localhost:3000', 'http://localhost:3001'];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Permettre les requêtes sans origin (mobile apps, etc.)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Non autorisé par la politique CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
+// Logging sécurisé
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+app.use(express.json({ limit: '10mb' })); // Limite la taille des requêtes
 
 // Routes
 app.get('/', (req, res) => {
@@ -71,8 +122,38 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
+// Middleware de gestion d'erreurs sécurisé
+app.use((err, req, res, _next) => {
+  console.error('❌ Error:', err.message);
+
+  // Ne pas exposer les détails d'erreur en production
+  if (process.env.NODE_ENV === 'production') {
+    res.status(500).json({
+      error: 'Erreur interne du serveur',
+      timestamp: new Date().toISOString(),
+    });
+  } else {
+    res.status(500).json({
+      error: err.message,
+      stack: err.stack,
+      timestamp: new Date().toISOString(),
+    });
+  }
+});
+
+// Middleware pour routes non trouvées
+app.use('*', (req, res) => {
+  res.status(404).json({
+    error: 'Route non trouvée',
+    path: req.originalUrl,
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📍 API available at http://localhost:${PORT}`);
+  console.log(`🛡️ Security: Helmet, CORS, Rate limiting enabled`);
+  console.log(`🔒 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
