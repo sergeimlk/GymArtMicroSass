@@ -17,6 +17,9 @@ if (!commitMsgFile) {
 
 const commitMsg = fs.readFileSync(commitMsgFile, 'utf8').trim();
 
+// Extraire seulement la première ligne (header)
+const commitHeader = commitMsg.split('\n')[0].trim();
+
 // Regex pour valider le format emoji + type
 const emojiTypeRegex =
   /^[\p{Emoji_Presentation}\p{Emoji}\u{FE0F}]+(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .+$/u;
@@ -37,13 +40,13 @@ const typeEmojiMap = {
 };
 
 // Ignorer les commits de merge
-if (commitMsg.startsWith('Merge ') || commitMsg.startsWith('Revert ')) {
+if (commitHeader.startsWith('Merge ') || commitHeader.startsWith('Revert ')) {
   console.log('✅ Commit de merge/revert autorisé');
   process.exit(0);
 }
 
 // Valider le format
-if (!emojiTypeRegex.test(commitMsg)) {
+if (!emojiTypeRegex.test(commitHeader)) {
   console.error(`❌ Message de commit invalide!
 
 Format OBLIGATOIRE: <emoji><type>: <description>
@@ -71,26 +74,26 @@ Exemples INVALIDES:
 ❌ 🚀 feat: add user authentication (espace)
 ❌ 🚀feat: Add user authentication (majuscule)
 
-Votre message: "${commitMsg}"
+Votre header: "${commitHeader}"
 
 Voir COMMIT_CONVENTIONS.md pour plus de détails.`);
 
   process.exit(1);
 }
 
-// Vérifier la longueur
-if (commitMsg.length > 120) {
-  console.error(`❌ Message trop long (${commitMsg.length} caractères, max 120)
+// Vérifier la longueur du header
+if (commitHeader.length > 120) {
+  console.error(`❌ Header trop long (${commitHeader.length} caractères, max 120)
 
-Votre message: "${commitMsg}"`);
+Votre header: "${commitHeader}"`);
   process.exit(1);
 }
 
-// Vérifier qu'il n'y a pas de point final
-if (commitMsg.endsWith('.')) {
-  console.error(`❌ Le message ne doit pas se terminer par un point
+// Vérifier qu'il n'y a pas de point final dans le header
+if (commitHeader.endsWith('.')) {
+  console.error(`❌ Le header ne doit pas se terminer par un point
 
-Votre message: "${commitMsg}"`);
+Votre header: "${commitHeader}"`);
   process.exit(1);
 }
 

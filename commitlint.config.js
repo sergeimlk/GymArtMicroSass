@@ -1,34 +1,13 @@
 module.exports = {
-  extends: ['@commitlint/config-conventional'],
+  // Configuration simplifiée pour permettre les emojis
   rules: {
-    // Format imposé: 🚀feat: description ou 📄docs: description
-    'header-pattern': [
-      2,
-      'always',
-      /^[\p{Emoji_Presentation}\p{Emoji}\u{FE0F}]+(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .{1,100}$/u,
-    ],
+    // Désactiver toutes les règles strictes
+    'type-empty': [0],
+    'type-enum': [0], 
+    'subject-empty': [0],
+    'subject-case': [0],
     'header-max-length': [2, 'always', 120],
-    'subject-case': [2, 'always', 'lower-case'],
-    'subject-empty': [2, 'never'],
     'subject-full-stop': [2, 'never', '.'],
-    'type-empty': [2, 'never'],
-    'type-enum': [
-      2,
-      'always',
-      [
-        'feat',     // 🚀 nouvelle fonctionnalité
-        'fix',      // 🐛 correction de bug
-        'docs',     // 📄 documentation
-        'style',    // 💅 formatage, style
-        'refactor', // ♻️ refactoring
-        'test',     // 🧪 ajout/modification de tests
-        'chore',    // 🔧 maintenance
-        'perf',     // ⚡ amélioration de performance
-        'ci',       // 👷 CI/CD
-        'build',    // 📦 build/dépendances
-        'revert',   // ⏪ annulation de commit
-      ],
-    ],
   },
   // Messages d'erreur personnalisés
   helpUrl: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint',
