@@ -3,6 +3,7 @@
 ## 📋 Vue d'ensemble
 
 Cette configuration Docker Compose lance l'environnement complet GymArt avec 3 services :
+
 - **PostgreSQL** : Base de données
 - **API** : Backend Express.js
 - **Client** : Frontend Next.js
@@ -23,12 +24,14 @@ docker compose logs -f
 ## 🏗️ Architecture des Dockerfiles
 
 ### API (Express.js)
+
 - **Multi-stage build** : deps → runtime
 - **Utilisateur non-root** : `nodeuser` (UID 1001)
 - **Port** : 3001
 - **Healthcheck** : `GET /api/health`
 
 ### Client (Next.js)
+
 - **Multi-stage build** : deps → builder → runtime
 - **Build standalone** : optimisé pour la production
 - **Utilisateur non-root** : `nextjs` (UID 1001)
@@ -36,6 +39,7 @@ docker compose logs -f
 - **Healthcheck** : `GET /`
 
 ### PostgreSQL
+
 - **Image** : `postgres:15-alpine`
 - **Port** : 5433 (externe) → 5432 (interne)
 - **Healthcheck** : `pg_isready`
@@ -53,20 +57,22 @@ PostgreSQL (healthy) → API (healthy) → Client
 
 ## 🌐 Accès aux services
 
-| Service | URL | Description |
-|---------|-----|-------------|
-| Frontend | http://localhost:3000 | Interface utilisateur |
-| API | http://localhost:3001 | Backend REST API |
-| PostgreSQL | localhost:5433 | Base de données |
+| Service    | URL                   | Description           |
+| ---------- | --------------------- | --------------------- |
+| Frontend   | http://localhost:3000 | Interface utilisateur |
+| API        | http://localhost:3001 | Backend REST API      |
+| PostgreSQL | localhost:5433        | Base de données       |
 
 ## 🧪 Tests
 
 ### Test automatique
+
 ```bash
 ./docker-test.sh
 ```
 
 ### Tests manuels
+
 ```bash
 # Test API
 curl http://localhost:3001/api/health
@@ -104,6 +110,7 @@ docker compose exec postgres psql -U postgres -d gymart
 ## 🔧 Variables d'environnement
 
 Créer un fichier `.env` :
+
 ```env
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
@@ -113,6 +120,7 @@ POSTGRES_DB=gymart
 ## 📊 Monitoring
 
 ### Healthchecks
+
 ```bash
 # Voir le statut des healthchecks
 docker compose ps
@@ -122,6 +130,7 @@ docker inspect saasbackapi-api-1 | jq '.[0].State.Health'
 ```
 
 ### Ressources
+
 ```bash
 # Utilisation des ressources
 docker stats
@@ -135,6 +144,7 @@ docker system df
 ### Problèmes courants
 
 **Port déjà utilisé**
+
 ```bash
 # Vérifier les ports
 lsof -i :3000
@@ -146,6 +156,7 @@ docker compose down
 ```
 
 **Build échoue**
+
 ```bash
 # Nettoyer le cache Docker
 docker system prune -a
@@ -155,6 +166,7 @@ docker compose build --no-cache
 ```
 
 **Base de données corrompue**
+
 ```bash
 # Supprimer le volume PostgreSQL
 docker compose down -v
@@ -174,6 +186,7 @@ docker volume rm saasbackapi_postgres_data
 ## 🎯 Prochaines étapes
 
 Après validation de l'Issue #8 :
+
 - Issue #9 : Tests unitaires et d'intégration
 - Issue #10 : CI/CD avec GitHub Actions
 - Issue #11 : Documentation complète

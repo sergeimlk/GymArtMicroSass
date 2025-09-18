@@ -9,11 +9,13 @@ Configuration complète de linting, formatage et hooks Git pour assurer la quali
 ### **ESLint**
 
 #### API (Backend - JavaScript)
+
 - **Fichier** : `api/.eslintrc.json`
 - **Règles** : Standard JavaScript avec règles strictes
 - **Scripts** : `npm run lint`, `npm run lint:fix`
 
 #### Client (Frontend - TypeScript/React)
+
 - **Fichier** : `client/.eslintrc.json`
 - **Règles** : Next.js + TypeScript + React
 - **Scripts** : `npm run lint`, `npm run lint:fix`
@@ -21,6 +23,7 @@ Configuration complète de linting, formatage et hooks Git pour assurer la quali
 ### **Prettier**
 
 #### Configuration globale
+
 - **Fichier** : `.prettierrc` (racine)
 - **Spécifiques** : `api/.prettierrc`, `client/.prettierrc`
 - **Scripts** : `npm run format`, `npm run format:check`
@@ -28,6 +31,7 @@ Configuration complète de linting, formatage et hooks Git pour assurer la quali
 ### **Git Hooks (Lefthook)**
 
 #### Pre-commit
+
 - ✅ **Prettier** : Formatage automatique avec `stage_fixed`
 - ✅ **ESLint API** : Linting backend avec auto-fix
 - ✅ **ESLint Client** : Linting frontend avec auto-fix
@@ -35,6 +39,7 @@ Configuration complète de linting, formatage et hooks Git pour assurer la quali
 - ✅ **Structure** : Validation monorepo
 
 #### Pre-push
+
 - 🔒 **Audit sécurité** : `npm audit` pour API et Client
 - 🧪 **Tests** : Exécution des tests (si configurés)
 - 🏗️ **Build** : Vérification du build client
@@ -46,6 +51,7 @@ Configuration complète de linting, formatage et hooks Git pour assurer la quali
 ### **Scripts npm disponibles**
 
 #### API (Backend)
+
 ```bash
 cd api
 npm run lint          # Vérifier les erreurs ESLint
@@ -55,6 +61,7 @@ npm run format:check   # Vérifier le formatage
 ```
 
 #### Client (Frontend)
+
 ```bash
 cd client
 npm run lint           # Vérifier les erreurs ESLint
@@ -105,6 +112,7 @@ cd client && npm audit
 ## 📊 Règles configurées
 
 ### **ESLint - Règles communes**
+
 - `quotes: single` - Guillemets simples obligatoires
 - `semi: always` - Points-virgules obligatoires
 - `no-unused-vars` - Variables non utilisées interdites
@@ -114,6 +122,7 @@ cd client && npm audit
 - `comma-dangle: es5` - Virgules finales selon ES5
 
 ### **Prettier - Configuration**
+
 - `singleQuote: true` - Guillemets simples
 - `semi: true` - Points-virgules
 - `tabWidth: 2` - Indentation 2 espaces
@@ -121,6 +130,7 @@ cd client && npm audit
 - `trailingComma: es5` - Virgules finales ES5
 
 ### **TypeScript (Client uniquement)**
+
 - `@typescript-eslint/no-unused-vars` - Variables TS non utilisées
 - `@typescript-eslint/no-explicit-any` - Warning sur `any`
 - `react-hooks/exhaustive-deps` - Dépendances React hooks
@@ -128,11 +138,13 @@ cd client && npm audit
 ## 🔒 Sécurité
 
 ### **Audit automatique**
+
 - **Niveau** : `moderate` (bloque les vulnérabilités modérées+)
 - **Fréquence** : À chaque push
 - **Action** : Échec du push si vulnérabilités détectées
 
 ### **Résolution des vulnérabilités**
+
 ```bash
 # Audit détaillé
 npm audit
@@ -149,18 +161,21 @@ npm audit fix --force
 ### **Problèmes courants**
 
 **ESLint ne trouve pas les fichiers**
+
 ```bash
 # Vérifier les globs dans lefthook.yml
 # S'assurer que les fichiers sont dans les bons dossiers
 ```
 
 **Prettier échoue**
+
 ```bash
 # Vérifier la syntaxe des .prettierrc
 # Valeurs autorisées pour trailingComma: "es5", "all", "none"
 ```
 
 **Hooks ne s'exécutent pas**
+
 ```bash
 # Réinstaller lefthook
 lefthook install
@@ -170,6 +185,7 @@ lefthook version
 ```
 
 **Conflits entre ESLint et Prettier**
+
 ```bash
 # Les configurations sont alignées
 # Prettier s'exécute avant ESLint dans les hooks

@@ -1,59 +1,55 @@
 **🎯 Plan Structuré selon le Brief :**
 
 **Phase 1 : Fondations (Issues Lundi-Mardi)**
-	**•	Issue #1** : Structure projet + Git
-	**•	Issue #2** : Frontend Next.js basique
-	**•	Issue #3** : Backend Express basique
-	
+**• Issue #1** : Structure projet + Git
+**• Issue #2** : Frontend Next.js basique
+**• Issue #3** : Backend Express basique
 **Phase 2 : Base de Données (Issues Mercredi)
-	•	Issue #4** : PostgreSQL via Docker
-	**•	Issue #5** : Connexion Express ↔ PostgreSQL
-	**•	Issue #6** : **Endpoint GET /api/health** (objectif principal)
-	
+• Issue #4** : PostgreSQL via Docker
+**• Issue #5** : Connexion Express ↔ PostgreSQL
+**• Issue #6** : **Endpoint GET /api/health** (objectif principal)
 **Phase 3 : Intégration (Issues Mercredi)
-	•	Issue #7** : **Frontend → API** (bouton Health)
-	**•	Issue #8** : Dockerisation complète
-	
+• Issue #7** : **Frontend → API** (bouton Health)
+**• Issue #8** : Dockerisation complète
 **Phase 4 : Qualité (Issues Jeudi)
-	•	Issue #9** : ESLint, Prettier, Git hooks
-	**•	Issue #10** : Sécurité et durcissement
-	**•	Issue #11** : Tests d'intégration / E2E
-	
+• Issue #9** : ESLint, Prettier, Git hooks
+**• Issue #10** : Sécurité et durcissement
+**• Issue #11** : Tests d'intégration / E2E
 **Phase 5 : Finalisation (Issues Jeudi)
-	•	Issue #12** : Documentation complète
-	**•	Issue #13** : **CI/CD GitHub Actions** (3 jobs)
-	**•	Issue #14** : Scripts Dev & Monitoring
-	
+• Issue #12** : Documentation complète
+**• Issue #13** : **CI/CD GitHub Actions** (3 jobs)
+**• Issue #14** : Scripts Dev & Monitoring
 **🏆 Caractéristiques du Plan :
-	•	Respect exact du brief** Consignedubrief.md
-	**•	Objectif health check** : API teste la BDD et retourne JSON au frontend
-	**•	Stack imposée** : Docker + GitHub Actions + outils qualité
-	**•	Critères de validation** intégrés pour chaque issue
-	**•	Messages de commit** conventionnels prêts à utiliser
+• Respect exact du brief** Consignedubrief.md
+**• Objectif health check** : API teste la BDD et retourne JSON au frontend
+**• Stack imposée** : Docker + GitHub Actions + outils qualité
+**• Critères de validation** intégrés pour chaque issue
+**• Messages de commit** conventionnels prêts à utiliser
 
-__________________________________________________________________
-
+---
 
 **#** **🚀 Plan de Commits API GymArt - 14 Issues Brief**
 
-**##** **📋 **Vue d'ensemble du Brief****
+**##** **📋 **Vue d'ensemble du Brief\*\*\*\*
 
-Ce plan détaille la mise en place technique d'un Micro-SaaS avec une ****infrastructure fullstack solide**** :
+Ce plan détaille la mise en place technique d'un Micro-SaaS avec une \***\*infrastructure fullstack solide\*\*** :
+
 - Base de données connectée à une API REST
 - Frontend capable de communiquer avec l'API
 - Outils de qualité de code (linting, formatage, sécurité)
 - Pipeline CI/CD automatisée via GitHub Actions
 
-****Objectif principal**** : Implémenter un ****health check**** - endpoint qui teste la connexion BDD et retourne le statut au frontend.
+\***\*Objectif principal\*\*** : Implémenter un \***\*health check\*\*** - endpoint qui teste la connexion BDD et retourne le statut au frontend.
 
 **---**
 
-**##** **📋 **ISSUE #1 — Initialiser la structure du projet et config Git****
+**##** **📋 **ISSUE #1 — Initialiser la structure du projet et config Git\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Créer la structure de base du monorepo avec configuration Git appropriée.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 /
 ├── api/                 # Backend API
@@ -70,7 +66,8 @@ Créer la structure de base du monorepo avec configuration Git appropriée.
 └── compose.yml          # Docker Compose (structure de base)
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 *# Initialisation Git*
 git init
@@ -84,7 +81,8 @@ echo -e "node_modules/\n.git/\n.env\n*.log\ndist/\nbuild/\n.DS_Store" > api/.doc
 echo -e "node_modules/\n.git/\n.env\n*.log\ndist/\nbuild/\n.DS_Store" > client/.dockerignore
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🏗️ feat: initialize project structure and Git configuration
 
@@ -99,12 +97,13 @@ Closes #1
 
 **---**
 
-**##** **📋 **ISSUE #2 — Frontend Next.js basique (local)****
+**##** **📋 **ISSUE #2 — Frontend Next.js basique (local)\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Initialiser une application Next.js basique avec TypeScript et Tailwind CSS.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 client/
 ├── package.json         # Dépendances Next.js
@@ -123,14 +122,16 @@ client/
     └── favicon.ico
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 cd client
 npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"
 npm install
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🌐 feat: setup basic Next.js frontend with TypeScript
 
@@ -145,12 +146,13 @@ Closes #2
 
 **---**
 
-**##** **📋 **ISSUE #3 — Backend Express basique (local)****
+**##** **📋 **ISSUE #3 — Backend Express basique (local)\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Créer une API Express basique avec TypeScript et structure modulaire.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 api/
 ├── package.json         # Dépendances Express
@@ -171,7 +173,8 @@ api/
 └── .env.example         # Variables d'environnement API
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 cd api
 npm init -y
@@ -180,7 +183,8 @@ npm install -D @types/express @types/cors @types/morgan typescript nodemon ts-no
 npx tsc --init
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🔌 feat: setup basic Express backend with TypeScript
 
@@ -195,12 +199,13 @@ Closes #3
 
 **---**
 
-**##** **📋 **ISSUE #4 — Base de données PostgreSQL via Docker****
+**##** **📋 **ISSUE #4 — Base de données PostgreSQL via Docker\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Configurer PostgreSQL avec Docker et scripts d'initialisation.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 /
 ├── compose.yml          # Configuration Docker Compose complète
@@ -211,7 +216,8 @@ Configurer PostgreSQL avec Docker et scripts d'initialisation.
     └── data/            # Volume de données (gitignore)
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 *# Création du dossier database*
 mkdir -p database/init database/data
@@ -224,7 +230,8 @@ docker compose up -d database
 docker compose logs database
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🗄️ feat: setup PostgreSQL database with Docker
 
@@ -239,12 +246,13 @@ Closes #4
 
 **---**
 
-**##** **📋 **ISSUE #5 — Connecter Express à PostgreSQL****
+**##** **📋 **ISSUE #5 — Connecter Express à PostgreSQL\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Établir la connexion entre l'API Express et PostgreSQL avec pool de connexions.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 api/src/
 ├── config/
@@ -258,14 +266,16 @@ api/src/
     └── database.ts      # Types pour la BDD
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 cd api
 npm install pg
 npm install -D @types/pg
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🔗 feat: connect Express to PostgreSQL database
 
@@ -280,12 +290,13 @@ Closes #5
 
 **---**
 
-**##** **📋 **ISSUE #6 — Endpoint GET /api/health****
+**##** **📋 **ISSUE #6 — Endpoint GET /api/health\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Implémenter l'endpoint de health check qui teste la connexion BDD.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 api/src/
 ├── routes/
@@ -298,7 +309,8 @@ api/src/
     └── health.ts        # Types pour health check
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 *# Test de l'endpoint*
 curl http://localhost:3001/api/health
@@ -308,7 +320,8 @@ docker compose up -d
 curl http://localhost:3001/api/health
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🏥 feat: implement GET /api/health endpoint
 
@@ -323,12 +336,13 @@ Closes #6
 
 **---**
 
-**##** **📋 **ISSUE #7 — Intégration Frontend → API (bouton Health)****
+**##** **📋 **ISSUE #7 — Intégration Frontend → API (bouton Health)\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Créer l'interface frontend pour tester l'endpoint health de l'API.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 client/src/
 ├── components/
@@ -345,7 +359,8 @@ client/src/
     └── health.ts        # Types partagés
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 cd client
 npm install axios
@@ -353,7 +368,8 @@ npm install axios
 npm install fetch (si préférence pour fetch natif)
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🌐 feat: implement frontend health check integration
 
@@ -368,12 +384,13 @@ Closes #7
 
 **---**
 
-**##** **📋 **ISSUE #8 — Dockerisation complète (API, Frontend, Compose)****
+**##** **📋 **ISSUE #8 — Dockerisation complète (API, Frontend, Compose)\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Créer les Dockerfiles pour chaque service et optimiser Docker Compose.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 api/
 └── Dockerfile           # Multi-stage build pour API
@@ -386,7 +403,8 @@ compose.dev.yml          # Override pour développement
 .dockerignore            # Exclusions globales
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 *# Build et test*
 docker compose build
@@ -398,7 +416,8 @@ curl http://localhost:3000  *# Frontend*
 curl http://localhost:3001/api/health  *# API*
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🐳 feat: complete Docker setup with multi-stage builds
 
@@ -413,12 +432,13 @@ Closes #8
 
 **---**
 
-**##** **📋 **ISSUE #9 — ESLint, Prettier, Git hooks (Lefthook/Husky)****
+**##** **📋 **ISSUE #9 — ESLint, Prettier, Git hooks (Lefthook/Husky)\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Configurer les outils de qualité de code et hooks Git automatisés.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 /
 ├── .eslintrc.json       # Configuration ESLint globale
@@ -437,7 +457,8 @@ client/
 └── package.json         # Scripts Frontend
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 *# Installation globale*
 npm install -D eslint prettier lefthook
@@ -451,7 +472,8 @@ cd ../client && npm install -D eslint prettier
 npx lefthook install
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🧹 feat: setup code quality tools and Git hooks
 
@@ -466,12 +488,13 @@ Closes #9
 
 **---**
 
-**##** **📋 **ISSUE #10 — Sécurité et durcissement****
+**##** **📋 **ISSUE #10 — Sécurité et durcissement\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Implémenter les mesures de sécurité essentielles pour l'API et l'infrastructure.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 api/src/
 ├── middleware/
@@ -490,7 +513,8 @@ api/src/
     └── audit.md         # Documentation sécurité
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 cd api
 npm install helmet express-rate-limit express-validator
@@ -498,7 +522,8 @@ npm audit
 npm audit fix
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🛡️ feat: implement security hardening and protection
 
@@ -513,12 +538,13 @@ Closes #10
 
 **---**
 
-**##** **📋 **ISSUE #11 — Tests d'intégration / E2E (complément)****
+**##** **📋 **ISSUE #11 — Tests d'intégration / E2E (complément)\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Ajouter des tests pour valider le fonctionnement de l'endpoint health et de l'intégration.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 api/
 ├── tests/
@@ -541,7 +567,8 @@ client/
 └── package.json             # Scripts de test
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 *# Installation API*
 cd api
@@ -555,7 +582,8 @@ npm install -D jest @testing-library/react @testing-library/jest-dom
 npm test
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🧪 feat: add integration and E2E tests
 
@@ -570,12 +598,13 @@ Closes #11
 
 **---**
 
-**##** **📋 **ISSUE #12 — Documentation (README + API)****
+**##** **📋 **ISSUE #12 — Documentation (README + API)\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Créer une documentation complète pour l'installation, l'utilisation et l'API.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 /
 ├── README.md            # Documentation principale
@@ -590,14 +619,16 @@ Créer une documentation complète pour l'installation, l'utilisation et l'API.
     └── README.md        # Documentation Frontend
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 *# Génération documentation API (optionnel)*
 cd api
 npm install -D swagger-jsdoc swagger-ui-express
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 📚 docs: add comprehensive project documentation
 
@@ -612,12 +643,13 @@ Closes #12
 
 **---**
 
-**##** **📋 **ISSUE #13 — CI/CD GitHub Actions (3 jobs)****
+**##** **📋 **ISSUE #13 — CI/CD GitHub Actions (3 jobs)\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Configurer la pipeline CI/CD complète avec 3 jobs (Backend, Frontend, Docker).
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 .github/
 ├── workflows/
@@ -630,14 +662,16 @@ Configurer la pipeline CI/CD complète avec 3 jobs (Backend, Frontend, Docker).
 └── pull_request_template.md
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 *# Test local des actions (optionnel)*
 npm install -g @github/act
 act pull_request
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🚀 feat: implement CI/CD pipeline with GitHub Actions
 
@@ -652,12 +686,13 @@ Closes #13
 
 **---**
 
-**##** **📋 **ISSUE #14 — Scripts Dev & Monitoring (bonus utile)****
+**##** **📋 **ISSUE #14 — Scripts Dev & Monitoring (bonus utile)\*\*\*\*
 
-**###** ****🎯 Objectif :****
+**###** \***\*🎯 Objectif :\*\***
 Ajouter des scripts utilitaires pour le développement et le monitoring basique.
 
-**###** ****✅ Fichiers à Créer/Modifier :****
+**###** \***\*✅ Fichiers à Créer/Modifier :\*\***
+
 ```
 scripts/
 ├── dev/
@@ -674,7 +709,8 @@ scripts/
 package.json             # Scripts npm globaux
 ```
 
-**###** ****🔧 Commandes :****
+**###** \***\*🔧 Commandes :\*\***
+
 ```bash
 *# Rendre les scripts exécutables*
 chmod +x scripts/**/*.sh
@@ -684,7 +720,8 @@ chmod +x scripts/**/*.sh
 ./scripts/monitoring/health-check.sh
 ```
 
-**###** ****💬 Message de Commit :****
+**###** \***\*💬 Message de Commit :\*\***
+
 ```
 🧰 feat: add development and monitoring scripts
 
@@ -699,9 +736,10 @@ Closes #14
 
 **---**
 
-**##** **🎯 **Workflow de Développement Recommandé****
+**##** **🎯 **Workflow de Développement Recommandé\*\*\*\*
 
-**###** ****Ordre d'Exécution des Issues :****
+**###** \***\*Ordre d'Exécution des Issues :\*\***
+
 ```bash
 *# Phase 1: Structure de base (Issues 1-3)*
 git checkout -b feature/issue-1-project-structure
@@ -728,7 +766,8 @@ git checkout -b feature/issue-13-github-actions
 git checkout -b feature/issue-14-dev-scripts
 ```
 
-**###** ****Commandes de Test Essentielles :****
+**###** \***\*Commandes de Test Essentielles :\*\***
+
 ```bash
 *# Lancement complet*
 docker compose up -d --build
@@ -746,31 +785,34 @@ npm run test
 docker compose down -v
 ```
 
-**###** ****Critères de Validation :****
-- ✅ ****Docker Compose**** : Un seul comando suffit
-- ✅ ****API Health**** : Endpoint GET fonctionnel avec test BDD
-- ✅ ****Frontend**** : Affichage du message de la BDD (pas console.log)
-- ✅ ****Qualité**** : ESLint/Prettier sans erreurs
-- ✅ ****Git Hooks**** : Vérification automatique avant commit/push
-- ✅ ****GitHub Actions**** : CI/CD sur pull requests
+**###** \***\*Critères de Validation :\*\***
+
+- ✅ \***\*Docker Compose\*\*** : Un seul comando suffit
+- ✅ \***\*API Health\*\*** : Endpoint GET fonctionnel avec test BDD
+- ✅ \***\*Frontend\*\*** : Affichage du message de la BDD (pas console.log)
+- ✅ \***\*Qualité\*\*** : ESLint/Prettier sans erreurs
+- ✅ \***\*Git Hooks\*\*** : Vérification automatique avant commit/push
+- ✅ \***\*GitHub Actions\*\*** : CI/CD sur pull requests
 
 **---**
 
-**##** **🏆 **Résumé du Projet****
+**##** **🏆 **Résumé du Projet\*\*\*\*
 
-**###** ****🎯 Objectifs Atteints :****
-- ✅ ****Infrastructure Fullstack**** complète avec Docker
-- ✅ ****API REST**** avec endpoint health et connexion PostgreSQL
-- ✅ ****Frontend Next.js**** avec intégration API
-- ✅ ****Outils de Qualité**** (ESLint, Prettier, Git hooks)
-- ✅ ****CI/CD Pipeline**** avec GitHub Actions
-- ✅ ****Sécurité**** et bonnes pratiques
-- ✅ ****Tests**** d'intégration et E2E
-- ✅ ****Documentation**** complète
+**###** \***\*🎯 Objectifs Atteints :\*\***
 
-**###** ****🚀 Stack Technique :****
-- ****Backend**** : Node.js, Express, TypeScript, PostgreSQL
-- ****Frontend**** : Next.js 14, React 18, TypeScript, Tailwind CSS
-- ****DevOps**** : Docker, Docker Compose, GitHub Actions
-- ****Qualité**** : ESLint, Prettier, Lefthook, Jest
-- ****Sécurité**** : Helmet, Rate Limiting, Input Validation
+- ✅ \***\*Infrastructure Fullstack\*\*** complète avec Docker
+- ✅ \***\*API REST\*\*** avec endpoint health et connexion PostgreSQL
+- ✅ \***\*Frontend Next.js\*\*** avec intégration API
+- ✅ \***\*Outils de Qualité\*\*** (ESLint, Prettier, Git hooks)
+- ✅ \***\*CI/CD Pipeline\*\*** avec GitHub Actions
+- ✅ \***\*Sécurité\*\*** et bonnes pratiques
+- ✅ \***\*Tests\*\*** d'intégration et E2E
+- ✅ \***\*Documentation\*\*** complète
+
+**###** \***\*🚀 Stack Technique :\*\***
+
+- \***\*Backend\*\*** : Node.js, Express, TypeScript, PostgreSQL
+- \***\*Frontend\*\*** : Next.js 14, React 18, TypeScript, Tailwind CSS
+- \***\*DevOps\*\*** : Docker, Docker Compose, GitHub Actions
+- \***\*Qualité\*\*** : ESLint, Prettier, Lefthook, Jest
+- \***\*Sécurité\*\*** : Helmet, Rate Limiting, Input Validation

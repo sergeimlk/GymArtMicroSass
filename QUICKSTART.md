@@ -5,6 +5,7 @@
 ## ⚡ Démarrage Ultra-Rapide
 
 ### Prérequis
+
 - Docker Desktop installé et démarré
 - Git installé
 
@@ -23,6 +24,7 @@ curl http://localhost:3001/api/health
 ```
 
 **🎯 URLs importantes**:
+
 - **Application**: http://localhost:3000
 - **API**: http://localhost:3001
 - **Health Check**: http://localhost:3001/api/health

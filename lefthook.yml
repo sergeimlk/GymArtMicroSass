@@ -2,38 +2,38 @@
 # Automatise la qualité de code et les vérifications avant commit/push
 
 pre-commit:
-  parallel: true  # Exécute les commandes en parallèle pour plus de rapidité
+  parallel: true # Exécute les commandes en parallèle pour plus de rapidité
   commands:
     # Formatage automatique avec Prettier (global)
     prettier:
-      glob: "**/*.{js,jsx,ts,tsx,css,md,json,yml,yaml}"
+      glob: '**/*.{js,jsx,ts,tsx,css,md,json,yml,yaml}'
       run: npx prettier --write {staged_files}
-      stage_fixed: true  # Re-ajoute automatiquement les fichiers corrigés
-      fail_text: "❌ Prettier formatting failed. Please check the output above."
-      
+      stage_fixed: true # Re-ajoute automatiquement les fichiers corrigés
+      fail_text: '❌ Prettier formatting failed. Please check the output above.'
+
     # Linting ESLint pour l'API (backend)
     eslint-api:
-      glob: "api/src/**/*.js"
+      glob: 'api/src/**/*.js'
       run: cd api && npm run lint:fix
       stage_fixed: true
-      fail_text: "❌ ESLint API failed. Please fix the linting errors above."
-      
+      fail_text: '❌ ESLint API failed. Please fix the linting errors above.'
+
     # Linting ESLint pour le client (frontend)
     eslint-client:
-      glob: "client/src/**/*.{js,jsx,ts,tsx}"
+      glob: 'client/src/**/*.{js,jsx,ts,tsx}'
       run: cd client && npm run lint:fix
       stage_fixed: true
-      fail_text: "❌ ESLint client failed. Please fix the linting errors above."
-      
+      fail_text: '❌ ESLint client failed. Please fix the linting errors above.'
+
     # Vérification TypeScript pour le client
     typecheck-client:
-      glob: "client/**/*.{ts,tsx}"
+      glob: 'client/**/*.{ts,tsx}'
       run: cd client && npm run type-check
-      fail_text: "❌ TypeScript check failed. Please fix the type errors above."
-      
+      fail_text: '❌ TypeScript check failed. Please fix the type errors above.'
+
     # Vérification de la structure du projet
     check-structure:
-      glob: "*"
+      glob: '*'
       run: |
         if [ ! -d "api" ] || [ ! -d "client" ]; then
           echo "❌ Structure monorepo manquante (api/ et client/ requis)"
@@ -48,9 +48,9 @@ commit-msg:
       run: npx commitlint --edit {1}
       fail_text: |
         ❌ Message de commit invalide!
-        
+
         Format requis: <type>: <description>
-        
+
         Types autorisés:
         - feat: nouvelle fonctionnalité
         - fix: correction de bug
@@ -60,7 +60,7 @@ commit-msg:
         - test: ajout de tests
         - chore: maintenance
         - ci: intégration continue
-        
+
         Exemple: feat: add user authentication
 
 # Vérifications avant push
@@ -72,14 +72,14 @@ pre-push:
         echo "🔒 Audit de sécurité API..."
         cd api && npm audit --audit-level=moderate
       fail_text: "❌ Vulnérabilités de sécurité détectées dans l'API!"
-      
+
     # Audit de sécurité npm pour le client
     security-audit-client:
       run: |
         echo "🔒 Audit de sécurité Client..."
         cd client && npm audit --audit-level=moderate
-      fail_text: "❌ Vulnérabilités de sécurité détectées dans le client!"
-    
+      fail_text: '❌ Vulnérabilités de sécurité détectées dans le client!'
+
     # Tests backend (si disponibles)
     test-api:
       run: |
@@ -89,23 +89,23 @@ pre-push:
         else
           echo "ℹ️ Pas de tests backend configurés, skip"
         fi
-      fail_text: "❌ Tests backend échoués. Corrigez avant de push!"
-      
+      fail_text: '❌ Tests backend échoués. Corrigez avant de push!'
+
     # Build du frontend pour vérifier les erreurs
     build-client:
       run: |
         echo "🏗️ Vérification du build frontend..."
         cd client && npm run build
-      fail_text: "❌ Build client échoué. Corrigez les erreurs avant de push!"
-      
+      fail_text: '❌ Build client échoué. Corrigez les erreurs avant de push!'
+
     # Vérification finale du linting (sans auto-fix)
     final-lint-check:
       run: |
         echo "🔍 Vérification finale du linting..."
         cd api && npm run lint
         cd ../client && npm run lint
-      fail_text: "❌ Erreurs de linting détectées. Corrigez avant de push!"
-      
+      fail_text: '❌ Erreurs de linting détectées. Corrigez avant de push!'
+
     # Vérification de la santé de l'API (si elle tourne)
     api-health:
       run: |
@@ -114,7 +114,7 @@ pre-push:
         else
           echo "ℹ️ API non accessible (normal si pas démarrée)"
         fi
-      
+
     # Vérification de la base de données (si Docker tourne)
     db-health:
       run: |

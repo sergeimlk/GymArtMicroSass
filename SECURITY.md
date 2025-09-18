@@ -9,6 +9,7 @@ Configuration complète de sécurité et durcissement pour l'application GymArt,
 ### **1. Headers de sécurité (Helmet)**
 
 #### Configuration active
+
 ```javascript
 helmet({
   contentSecurityPolicy: {
@@ -20,10 +21,11 @@ helmet({
     },
   },
   crossOriginEmbedderPolicy: false, // Compatibilité développement
-})
+});
 ```
 
 #### Headers automatiques
+
 - **Content-Security-Policy** : Prévient les attaques XSS
 - **Strict-Transport-Security** : Force HTTPS en production
 - **X-Content-Type-Options** : Prévient le MIME sniffing
@@ -34,9 +36,10 @@ helmet({
 ### **2. CORS strict et minimal**
 
 #### Configuration sécurisée
+
 ```javascript
 cors({
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     // Vérification des origines autorisées
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
@@ -47,10 +50,11 @@ cors({
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-})
+});
 ```
 
 #### Origines autorisées
+
 - Configurées via `ALLOWED_ORIGINS` dans `.env`
 - Par défaut : `http://localhost:3000,http://localhost:3001`
 - Production : Domaines spécifiques uniquement
@@ -58,15 +62,17 @@ cors({
 ### **3. Rate Limiting**
 
 #### Protection anti-DDoS
+
 ```javascript
 rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: process.env.NODE_ENV === 'production' ? 100 : 1000,
   message: { error: 'Trop de requêtes, réessayez dans 15 minutes.' },
-})
+});
 ```
 
 #### Limites par environnement
+
 - **Développement** : 1000 requêtes/15min
 - **Production** : 100 requêtes/15min
 - Headers informatifs : `RateLimit-*`
@@ -74,6 +80,7 @@ rateLimit({
 ### **4. Variables d'environnement sécurisées**
 
 #### Variables sensibles
+
 ```env
 # Secrets - À changer en production
 POSTGRES_PASSWORD=changeme_in_production
@@ -85,6 +92,7 @@ ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
 ```
 
 #### Bonnes pratiques
+
 - ✅ Pas de secrets hardcodés dans le code
 - ✅ Fichier `.env.example` avec valeurs par défaut
 - ✅ `.env` dans `.gitignore`
@@ -93,6 +101,7 @@ ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
 ### **5. Gestion d'erreurs sécurisée**
 
 #### Protection des informations sensibles
+
 ```javascript
 // Production : Pas de détails d'erreur
 if (process.env.NODE_ENV === 'production') {
@@ -113,17 +122,19 @@ if (process.env.NODE_ENV === 'production') {
 ### **6. Dockerfiles sécurisés**
 
 #### Utilisateurs non-root
+
 ```dockerfile
 # API
 RUN addgroup -g 1001 -S nodejs && adduser -S nodeuser -u 1001
 USER nodeuser
 
-# Client  
+# Client
 RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 USER nextjs
 ```
 
 #### Sécurité des images
+
 - ✅ Images Alpine (surface d'attaque réduite)
 - ✅ Utilisateurs non-root (UID 1001)
 - ✅ Permissions appropriées avec `--chown`
@@ -223,7 +234,9 @@ if (process.env.NODE_ENV === 'production') {
 ```javascript
 // Logs de sécurité
 app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - IP: ${req.ip}`);
+  console.log(
+    `${new Date().toISOString()} - ${req.method} ${req.path} - IP: ${req.ip}`
+  );
   next();
 });
 ```
@@ -260,6 +273,7 @@ app.use((req, res, next) => {
 ## 🔍 Outils de sécurité recommandés
 
 ### **Analyse statique**
+
 ```bash
 # ESLint security plugin
 npm install --save-dev eslint-plugin-security
@@ -269,6 +283,7 @@ npm install --save-dev audit-ci
 ```
 
 ### **Tests de sécurité**
+
 ```bash
 # OWASP ZAP pour tests de pénétration
 # Snyk pour audit des vulnérabilités
@@ -289,6 +304,7 @@ npm install --save-dev audit-ci
 ## 🎯 Prochaines étapes
 
 Après validation de l'Issue #10 :
+
 - Issue #11 : CI/CD avec GitHub Actions et déploiement sécurisé
 - Issue #12 : Documentation finale et validation complète
 - Audit de sécurité externe recommandé avant production

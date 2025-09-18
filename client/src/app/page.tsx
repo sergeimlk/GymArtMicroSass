@@ -41,29 +41,29 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-6 py-16">
-        <div className="max-w-2xl mx-auto">
+    <div className='min-h-screen bg-background'>
+      <div className='container mx-auto px-6 py-16'>
+        <div className='max-w-2xl mx-auto'>
           {/* Header */}
-          <div className="text-center mb-12 animate-glass-searchbar-in">
-            <h1 className="text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
+          <div className='text-center mb-12 animate-glass-searchbar-in'>
+            <h1 className='text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4'>
               🏋️ GymArt
             </h1>
           </div>
 
           {/* Main Card */}
-          <div className="bg-gradient-card backdrop-blur-sm border border-border rounded-lg shadow-card p-8">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-semibold text-card-foreground mb-4">
+          <div className='bg-gradient-card backdrop-blur-sm border border-border rounded-lg shadow-card p-8'>
+            <div className='text-center mb-8'>
+              <h2 className='text-2xl font-semibold text-card-foreground mb-4'>
                 Test de connexion API
               </h2>
-              <p className="text-muted-foreground">
+              <p className='text-muted-foreground'>
                 Testez la connexion avec votre backend en un clic
               </p>
             </div>
 
             {/* Test Button */}
-            <div className="flex justify-center mb-8">
+            <div className='flex justify-center mb-8'>
               <button
                 onClick={testApiConnection}
                 disabled={isLoading}
@@ -79,12 +79,12 @@ export default function Home() {
                 `}
               >
                 {isLoading ? (
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                  <div className='flex items-center space-x-3'>
+                    <div className='w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin'></div>
                     <span>Test en cours...</span>
                   </div>
                 ) : (
-                  <div className="flex items-center space-x-2">
+                  <div className='flex items-center space-x-2'>
                     <span>🔗</span>
                     <span>Tester la connexion API</span>
                   </div>
@@ -94,45 +94,45 @@ export default function Home() {
 
             {/* Response Display */}
             {(response || error) && (
-              <div className="mt-8 space-y-4">
-                <h3 className="text-lg font-medium text-card-foreground">
+              <div className='mt-8 space-y-4'>
+                <h3 className='text-lg font-medium text-card-foreground'>
                   Réponse API
                 </h3>
 
                 {error ? (
-                  <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-destructive">❌</span>
-                      <span className="text-destructive font-medium">
+                  <div className='bg-destructive/10 border border-destructive/20 rounded-lg p-4'>
+                    <div className='flex items-center space-x-2 mb-2'>
+                      <span className='text-destructive'>❌</span>
+                      <span className='text-destructive font-medium'>
                         Erreur de connexion
                       </span>
                     </div>
-                    <p className="text-destructive/80 text-sm">{error}</p>
+                    <p className='text-destructive/80 text-sm'>{error}</p>
                   </div>
                 ) : response?.status === 'error' ? (
-                  <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-                    <div className="flex items-center space-x-2 mb-3">
-                      <span className="text-destructive">❌</span>
-                      <span className="text-destructive font-medium">
+                  <div className='bg-destructive/10 border border-destructive/20 rounded-lg p-4'>
+                    <div className='flex items-center space-x-2 mb-3'>
+                      <span className='text-destructive'>❌</span>
+                      <span className='text-destructive font-medium'>
                         Erreur API (HTTP 500)
                       </span>
                     </div>
-                    <div className="bg-muted rounded-md p-3">
-                      <pre className="text-sm text-destructive overflow-x-auto">
+                    <div className='bg-muted rounded-md p-3'>
+                      <pre className='text-sm text-destructive overflow-x-auto'>
                         <code>{JSON.stringify(response, null, 2)}</code>
                       </pre>
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-success/10 border border-success/20 rounded-lg p-4">
-                    <div className="flex items-center space-x-2 mb-3">
-                      <span className="text-success">✅</span>
-                      <span className="text-success font-medium">
+                  <div className='bg-success/10 border border-success/20 rounded-lg p-4'>
+                    <div className='flex items-center space-x-2 mb-3'>
+                      <span className='text-success'>✅</span>
+                      <span className='text-success font-medium'>
                         Connexion réussie
                       </span>
                     </div>
-                    <div className="bg-muted rounded-md p-3">
-                      <pre className="text-sm text-muted-foreground overflow-x-auto">
+                    <div className='bg-muted rounded-md p-3'>
+                      <pre className='text-sm text-muted-foreground overflow-x-auto'>
                         <code>{JSON.stringify(response, null, 2)}</code>
                       </pre>
                     </div>
@@ -142,18 +142,18 @@ export default function Home() {
             )}
 
             {/* Configuration Info */}
-            <div className="mt-8 bg-secondary/50 border border-border rounded-lg p-4">
-              <div className="flex items-start space-x-3">
-                <span className="text-accent text-lg">⚙️</span>
-                <div className="text-sm space-y-1">
-                  <p className="font-medium text-secondary-foreground">
+            <div className='mt-8 bg-secondary/50 border border-border rounded-lg p-4'>
+              <div className='flex items-start space-x-3'>
+                <span className='text-accent text-lg'>⚙️</span>
+                <div className='text-sm space-y-1'>
+                  <p className='font-medium text-secondary-foreground'>
                     Configuration
                   </p>
-                  <p className="text-muted-foreground">
+                  <p className='text-muted-foreground'>
                     API URL:{' '}
                     {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}
                   </p>
-                  <p className="text-muted-foreground">Endpoint: /api/health</p>
+                  <p className='text-muted-foreground'>Endpoint: /api/health</p>
                 </div>
               </div>
             </div>

@@ -9,6 +9,6 @@ module.exports = {
     'type-empty': [0], // Désactiver car l'emoji peut être avant le type
     'type-enum': [0], // Désactiver pour permettre emoji + type
     'header-case': [0], // Désactiver la vérification de la casse du header
-    'header-full-stop': [0] // Désactiver pour plus de flexibilité
-  }
+    'header-full-stop': [0], // Désactiver pour plus de flexibilité
+  },
 };

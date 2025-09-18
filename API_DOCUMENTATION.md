@@ -33,6 +33,7 @@ Actuellement, l'API ne nécessite pas d'authentification. Tous les endpoints son
 Retourne les informations générales de l'API.
 
 **Réponse**:
+
 ```json
 {
   "name": "GymArt API",
@@ -43,6 +44,7 @@ Retourne les informations générales de l'API.
 ```
 
 **Codes de statut**:
+
 - `200 OK`: Succès
 
 ---
@@ -54,6 +56,7 @@ Retourne les informations générales de l'API.
 Endpoint de test pour vérifier que l'API fonctionne correctement.
 
 **Réponse**:
+
 ```json
 {
   "ok": true,
@@ -64,6 +67,7 @@ Endpoint de test pour vérifier que l'API fonctionne correctement.
 ```
 
 **Codes de statut**:
+
 - `200 OK`: API fonctionnelle
 
 ---
@@ -75,6 +79,7 @@ Endpoint de test pour vérifier que l'API fonctionne correctement.
 Vérifie l'état de santé de l'API et la connectivité à la base de données.
 
 **Réponse (Succès)**:
+
 ```json
 {
   "status": "ok",
@@ -83,6 +88,7 @@ Vérifie l'état de santé de l'API et la connectivité à la base de données.
 ```
 
 **Réponse (Erreur)**:
+
 ```json
 {
   "status": "error",
@@ -91,10 +97,12 @@ Vérifie l'état de santé de l'API et la connectivité à la base de données.
 ```
 
 **Codes de statut**:
+
 - `200 OK`: API et base de données fonctionnelles
 - `500 Internal Server Error`: Problème de connexion à la base de données
 
 **Tests effectués**:
+
 - ✅ Connexion à PostgreSQL
 - ✅ Exécution de `SELECT 1` pour validation
 
@@ -106,7 +114,7 @@ Vérifie l'état de santé de l'API et la connectivité à la base de données.
 
 ```typescript
 interface HealthResponse {
-  status: "ok" | "error";
+  status: 'ok' | 'error';
   message: string;
 }
 ```
@@ -135,15 +143,16 @@ interface ApiInfo {
 
 ## ⚠️ Codes d'erreur
 
-| Code | Description | Solution |
-|------|-------------|----------|
-| `200` | Succès | - |
-| `404` | Endpoint non trouvé | Vérifier l'URL |
-| `500` | Erreur serveur | Vérifier les logs, connectivité DB |
+| Code  | Description         | Solution                           |
+| ----- | ------------------- | ---------------------------------- |
+| `200` | Succès              | -                                  |
+| `404` | Endpoint non trouvé | Vérifier l'URL                     |
+| `500` | Erreur serveur      | Vérifier les logs, connectivité DB |
 
 ### Gestion des erreurs
 
 En **développement**, les erreurs incluent la stack trace :
+
 ```json
 {
   "error": "Database connection failed",
@@ -153,6 +162,7 @@ En **développement**, les erreurs incluent la stack trace :
 ```
 
 En **production**, les erreurs sont sécurisées :
+
 ```json
 {
   "error": "Erreur interne du serveur",
@@ -183,7 +193,7 @@ const checkHealth = async () => {
   try {
     const response = await fetch('http://localhost:3001/api/health');
     const data = await response.json();
-    
+
     if (data.status === 'ok') {
       console.log('✅ API is healthy');
     } else {
@@ -210,11 +220,13 @@ if response.status_code == 200:
 ## 🌍 Environnements
 
 ### Développement
+
 - **URL**: `http://localhost:3001`
 - **Base de données**: PostgreSQL local (port 5432)
 - **Logs**: Détaillés avec stack traces
 
 ### Production
+
 - **URL**: À définir selon déploiement
 - **Base de données**: PostgreSQL distant
 - **Logs**: Sécurisés sans stack traces

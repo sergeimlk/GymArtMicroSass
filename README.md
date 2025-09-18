@@ -50,6 +50,7 @@ docker compose logs -f
 ```
 
 **🎯 URLs après démarrage**:
+
 - **Frontend**: http://localhost:3000
 - **API**: http://localhost:3001
 - **Health Check**: http://localhost:3001/api/health
@@ -75,16 +76,16 @@ npm run dev
 
 Copiez `.env.example` vers `.env` et ajustez selon vos besoins:
 
-| Variable | Description | Valeur par défaut |
-|----------|-------------|-------------------|
-| `POSTGRES_HOST` | Hôte PostgreSQL | `postgres` |
-| `POSTGRES_PORT` | Port PostgreSQL | `5432` |
-| `POSTGRES_USER` | Utilisateur DB | `postgres` |
-| `POSTGRES_PASSWORD` | Mot de passe DB | `postgres` |
-| `POSTGRES_DB` | Nom de la base | `gymart` |
-| `API_PORT` | Port API Express | `3001` |
-| `FRONT_PORT` | Port client Next.js | `3000` |
-| `NODE_ENV` | Environnement | `development` |
+| Variable              | Description            | Valeur par défaut       |
+| --------------------- | ---------------------- | ----------------------- |
+| `POSTGRES_HOST`       | Hôte PostgreSQL        | `postgres`              |
+| `POSTGRES_PORT`       | Port PostgreSQL        | `5432`                  |
+| `POSTGRES_USER`       | Utilisateur DB         | `postgres`              |
+| `POSTGRES_PASSWORD`   | Mot de passe DB        | `postgres`              |
+| `POSTGRES_DB`         | Nom de la base         | `gymart`                |
+| `API_PORT`            | Port API Express       | `3001`                  |
+| `FRONT_PORT`          | Port client Next.js    | `3000`                  |
+| `NODE_ENV`            | Environnement          | `development`           |
 | `NEXT_PUBLIC_API_URL` | URL API pour le client | `http://localhost:3001` |
 
 ## 🐳 Commandes Docker Compose
@@ -184,15 +185,16 @@ npm run docker:logs   # View logs
 
 ### Endpoints principaux
 
-| Méthode | Endpoint | Description | Réponse |
-|---------|----------|-------------|---------|
-| `GET` | `/` | Informations API | `200` JSON |
-| `GET` | `/api/test` | Test de connectivité | `200` JSON |
-| `GET` | `/api/health` | Santé + DB status | `200/500` JSON |
+| Méthode | Endpoint      | Description          | Réponse        |
+| ------- | ------------- | -------------------- | -------------- |
+| `GET`   | `/`           | Informations API     | `200` JSON     |
+| `GET`   | `/api/test`   | Test de connectivité | `200` JSON     |
+| `GET`   | `/api/health` | Santé + DB status    | `200/500` JSON |
 
 ### Exemples de réponses
 
 **GET /api/health** (Succès)
+
 ```json
 {
   "status": "ok",
@@ -201,6 +203,7 @@ npm run docker:logs   # View logs
 ```
 
 **GET /api/health** (Erreur)
+
 ```json
 {
   "status": "error",
@@ -209,6 +212,7 @@ npm run docker:logs   # View logs
 ```
 
 **GET /api/test**
+
 ```json
 {
   "ok": true,
@@ -219,6 +223,7 @@ npm run docker:logs   # View logs
 ```
 
 **GET /** (Root)
+
 ```json
 {
   "name": "GymArt API",
@@ -262,6 +267,7 @@ npm run test:e2e -- --project=chromium
 ### Tests d'intégration
 
 **Tests API (16 tests)**:
+
 - ✅ Endpoints de base (`/`, `/api/test`, `/api/health`)
 - ✅ Connexion base de données PostgreSQL
 - ✅ Headers de sécurité (Helmet.js)
@@ -270,6 +276,7 @@ npm run test:e2e -- --project=chromium
 - ✅ Performance sous charge
 
 **Tests E2E (48 tests sur 3 navigateurs)**:
+
 - ✅ Intégration frontend ↔ backend
 - ✅ Interception des appels API
 - ✅ Tests de bout en bout complets
@@ -365,6 +372,7 @@ git push origin feature/issue-XXX-description
 ### Pre-commit hooks
 
 Les hooks Husky vérifient automatiquement:
+
 - ✅ Linting (ESLint)
 - ✅ Formatage (Prettier)
 - ✅ Messages de commit (commitlint)
@@ -396,6 +404,7 @@ git push # déclenche automatiquement le scan
 ### Problèmes courants
 
 **🚫 Services ne démarrent pas**
+
 ```bash
 # 1. Vérifier les logs pour identifier le problème
 docker compose logs
@@ -415,6 +424,7 @@ netstat -tulpn | grep -E ':(3000|3001|5432)'
 ```
 
 **🗄️ Base de données inaccessible**
+
 ```bash
 # 1. Vérifier le statut PostgreSQL
 docker compose exec postgres pg_isready -U postgres
@@ -433,6 +443,7 @@ docker compose exec api env | grep -E 'DB_|POSTGRES_'
 ```
 
 **⚛️ Erreurs de build Next.js**
+
 ```bash
 # 1. Nettoyer le cache Next.js
 rm -rf client/.next client/node_modules
@@ -448,6 +459,7 @@ cat client/.env.local
 ```
 
 **🔧 Problèmes de performance**
+
 ```bash
 # Voir l'utilisation des ressources
 docker compose top
