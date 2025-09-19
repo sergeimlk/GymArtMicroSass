@@ -4,27 +4,14 @@
     "es2022": true,
     "jest": true
   },
-  "extends": ["eslint:recommended"],
+  "extends": ["eslint:recommended", "prettier"],
   "parserOptions": {
     "ecmaVersion": 2022,
     "sourceType": "module"
   },
   "rules": {
-    "indent": ["error", 2],
-    "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"],
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "no-console": "off",
-    "no-trailing-spaces": "error",
-    "eol-last": "error",
-    "comma-dangle": ["error", "always-multiline"],
-    "object-curly-spacing": ["error", "always"],
-    "array-bracket-spacing": ["error", "never"],
-    "space-before-function-paren": ["error", "never"],
-    "keyword-spacing": "error",
-    "space-infix-ops": "error",
-    "no-multiple-empty-lines": ["error", { "max": 1 }],
     "prefer-const": "error",
     "no-var": "error"
   }
