@@ -64,7 +64,20 @@ async function testConnection() {
     console.error('❌ Error connecting to PostgreSQL:', err.message);
     console.error('❌ Error code:', err.code);
     console.error('❌ Error name:', err.name);
-    console.error('❌ Full error:', JSON.stringify(err, null, 2));
+    console.error('❌ Error stack:', err.stack);
+    console.error('❌ Error properties:', Object.getOwnPropertyNames(err));
+    console.error('❌ Full error object:', err);
+
+    // Essayons de voir si c'est un problème de réseau
+    if (err.code === 'ENOTFOUND') {
+      console.error('❌ DNS Resolution failed - host not found');
+    } else if (err.code === 'ECONNREFUSED') {
+      console.error('❌ Connection refused - service not running');
+    } else if (err.code === 'ETIMEDOUT') {
+      console.error('❌ Connection timeout');
+    } else if (err.message.includes('terminated unexpectedly')) {
+      console.error('❌ Connection terminated - likely authentication issue');
+    }
 
     // Retry avec une connexion directe
     console.log('🔄 Trying direct connection...');
