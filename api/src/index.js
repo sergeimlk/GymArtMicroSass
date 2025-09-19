@@ -18,7 +18,7 @@ const pool = new Pool({
   password:
     process.env.DB_PASSWORD || process.env.POSTGRES_PASSWORD || 'postgres',
   ssl:
-    process.env.NODE_ENV === 'production'
+    process.env.NODE_ENV === 'production' && process.env.DB_HOST !== 'postgres'
       ? { rejectUnauthorized: false }
       : false,
 });
