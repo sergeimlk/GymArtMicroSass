@@ -20,7 +20,9 @@ const dbConfig = process.env.DATABASE_URL
     }
   : {
       host: process.env.DB_HOST || process.env.POSTGRES_HOST || 'localhost',
-      port: process.env.DB_PORT || process.env.POSTGRES_PORT || 5433,
+      port: parseInt(
+        process.env.DB_PORT || process.env.POSTGRES_PORT || '5433'
+      ),
       database: process.env.DB_NAME || process.env.POSTGRES_DB || 'gymart',
       user: process.env.DB_USER || process.env.POSTGRES_USER || 'postgres',
       password:
@@ -29,6 +31,8 @@ const dbConfig = process.env.DATABASE_URL
         process.env.NODE_ENV === 'production'
           ? { rejectUnauthorized: false }
           : false,
+      connectionTimeoutMillis: 10000,
+      idleTimeoutMillis: 30000,
     };
 
 // Debug database configuration (sans le password)
