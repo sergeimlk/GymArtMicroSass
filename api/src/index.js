@@ -33,12 +33,13 @@ const dbConfig = process.env.DATABASE_URL
 
 // Debug database configuration (sans le password)
 console.log('🔍 Database config:', {
+  connectionString: dbConfig.connectionString ? 'DÉFINIE' : 'NON DÉFINIE',
   host: dbConfig.host,
   port: dbConfig.port,
   database: dbConfig.database,
   user: dbConfig.user,
   ssl: dbConfig.ssl,
-  hasPassword: !!dbConfig.password,
+  hasPassword: !!(dbConfig.password || dbConfig.connectionString),
 });
 
 const pool = new Pool(dbConfig);
@@ -47,6 +48,12 @@ const pool = new Pool(dbConfig);
 pool.connect((err, client, release) => {
   if (err) {
     console.error('❌ Error connecting to PostgreSQL:', err.message);
+    console.error('❌ Error code:', err.code);
+    console.error('❌ Error details:', {
+      host: err.hostname || 'N/A',
+      port: err.port || 'N/A',
+      database: err.database || 'N/A',
+    });
   } else {
     console.log('✅ Connected to PostgreSQL database');
     release();
