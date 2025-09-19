@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "gymart-client",
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://gymart-api.onrender.com"
+  },
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_API_URL": "https://gymart-api.onrender.com"
+    }
+  }
+}

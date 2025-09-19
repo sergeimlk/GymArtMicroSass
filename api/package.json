@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
+    "build": "echo 'No build step needed for Express app'",
     "dev": "nodemon src/index.js",
     "test": "jest --testPathIgnorePatterns=integration --forceExit",
     "test:watch": "jest --watch",

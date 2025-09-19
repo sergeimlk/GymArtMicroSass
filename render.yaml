@@ -1,0 +1,45 @@
+databases:
+  - name: gymart-postgres
+    databaseName: gymart
+    user: postgres
+    region: frankfurt
+
+services:
+  - type: web
+    name: gymart-api
+    runtime: node
+    region: frankfurt
+    buildCommand: cd api && npm install
+    startCommand: cd api && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DB_HOST
+        fromDatabase:
+          name: gymart-postgres
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: gymart-postgres
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: gymart-postgres
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: gymart-postgres
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: gymart-postgres
+          property: password
+      - key: ALLOWED_ORIGINS
+        value: https://gymart-client.vercel.app,https://localhost:3000
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 100
