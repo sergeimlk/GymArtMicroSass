@@ -9,7 +9,7 @@ services:
     name: gymart-api
     runtime: node
     region: frankfurt
-    buildCommand: cd api && npm install
+    buildCommand: cd api && npm install && npm run build
     startCommand: cd api && npm start
     healthCheckPath: /api/health
     envVars:
