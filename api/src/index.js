@@ -48,21 +48,41 @@ console.log('🔍 Database config:', {
 
 const pool = new Pool(dbConfig);
 
-// Test database connection
-pool.connect((err, client, release) => {
-  if (err) {
+// Test database connection avec retry
+async function testConnection() {
+  try {
+    console.log('🔄 Attempting database connection...');
+    const client = await pool.connect();
+    console.log('✅ Connected to PostgreSQL database');
+
+    // Test simple query
+    const result = await client.query('SELECT NOW() as current_time');
+    console.log('✅ Database query test successful:', result.rows[0]);
+
+    client.release();
+  } catch (err) {
     console.error('❌ Error connecting to PostgreSQL:', err.message);
     console.error('❌ Error code:', err.code);
-    console.error('❌ Error details:', {
-      host: err.hostname || 'N/A',
-      port: err.port || 'N/A',
-      database: err.database || 'N/A',
-    });
-  } else {
-    console.log('✅ Connected to PostgreSQL database');
-    release();
+    console.error('❌ Error name:', err.name);
+    console.error('❌ Full error:', JSON.stringify(err, null, 2));
+
+    // Retry avec une connexion directe
+    console.log('🔄 Trying direct connection...');
+    const { Client } = require('pg');
+    const directClient = new Client(dbConfig);
+
+    try {
+      await directClient.connect();
+      console.log('✅ Direct connection successful');
+      await directClient.end();
+    } catch (directErr) {
+      console.error('❌ Direct connection also failed:', directErr.message);
+      console.error('❌ Direct error code:', directErr.code);
+    }
   }
-});
+}
+
+testConnection();
 
 // Security middleware - MUST be first
 app.use(
