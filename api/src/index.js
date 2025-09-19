@@ -4,19 +4,19 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const morgan = require('morgan');
 const { Pool } = require('pg');
+
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// PostgreSQL connection
+// PostgreSQL connection - priorité à DATABASE_URL
 const dbConfig = process.env.DATABASE_URL
   ? {
       connectionString: process.env.DATABASE_URL,
-      ssl:
-        process.env.NODE_ENV === 'production'
-          ? { rejectUnauthorized: false }
-          : false,
+      ssl: { rejectUnauthorized: false },
+      connectionTimeoutMillis: 10000,
+      idleTimeoutMillis: 30000,
     }
   : {
       host: process.env.DB_HOST || process.env.POSTGRES_HOST || 'localhost',
@@ -27,10 +27,7 @@ const dbConfig = process.env.DATABASE_URL
       user: process.env.DB_USER || process.env.POSTGRES_USER || 'postgres',
       password:
         process.env.DB_PASSWORD || process.env.POSTGRES_PASSWORD || 'postgres',
-      ssl:
-        process.env.NODE_ENV === 'production'
-          ? { rejectUnauthorized: false }
-          : false,
+      ssl: { rejectUnauthorized: false },
       connectionTimeoutMillis: 10000,
       idleTimeoutMillis: 30000,
     };
