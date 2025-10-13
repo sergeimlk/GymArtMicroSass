@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
 // Script de debug pour les variables d'environnement
+require('dotenv').config({ path: './.env' }); // Charger le .env depuis la racine
 console.log('🔍 DEBUG: Variables d\'environnement');
 console.log('=====================================');
 
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('PORT:', process.env.PORT);
+console.log('API_PORT:', process.env.API_PORT);
 console.log('');
 
 console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'DÉFINIE' : 'NON DÉFINIE');
