@@ -1,0 +1,20 @@
+fail_on_severity: moderate
+allow_licenses:
+  - 'MIT'
+  - 'ISC'
+  - 'BSD-3-Clause'
+  - 'BSD-2-Clause'
+  - 'Apache-2.0'
+  - 'CC0-1.0'
+  - '0BSD'
+  - 'Unlicense'
+  - 'WTFPL'
+  - 'Zlib'
+
+fail_on_scopes:
+  - 'runtime'
+
+vulnerability_check: true
+license_check: true
+base_ref: 'main'
+head_ref: 'HEAD'
