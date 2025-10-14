@@ -289,48 +289,87 @@ npm run test:e2e -- --project=chromium
 
 ## 🔄 CI/CD
 
-### GitHub Actions Pipeline
+### Pipeline GitHub Actions (`ci.yml`)
 
-Le pipeline CI/CD automatisé comprend 5 jobs principaux :
+Le pipeline CI/CD automatisé comprend **6 jobs séquentiels** dans `.github/workflows/ci.yml` :
 
-1. **🔧 Backend Quality Checks**
-   - Linting ESLint + Prettier
-   - Tests unitaires et d'intégration
-   - Audit de sécurité npm
-   - Connexion PostgreSQL validée
+#### **1. 🔧 backend-checks** (Toujours)
+```yaml
+- PostgreSQL service intégré pour tests
+- Linting ESLint + Prettier
+- Tests unitaires Jest + tests d'intégration
+- Audit sécurité npm (niveau moderate)
+- Validation connexion base de données
+```
 
-2. **🎨 Frontend Quality Checks**
-   - Linting ESLint + TypeScript
-   - Vérification des types TypeScript
-   - Build Next.js optimisé
-   - Audit de sécurité npm
+#### **2. 🎨 frontend-checks** (Toujours - Parallèle)
+```yaml
+- Linting ESLint + vérification TypeScript
+- Build Next.js optimisé
+- Audit sécurité npm (niveau moderate)
+- Upload artifacts du build
+```
 
-3. **🐳 Docker Integration Tests**
-   - Validation configuration Docker Compose
-   - Build et démarrage des services
-   - Tests de santé des endpoints
-   - Validation end-to-end complète
+#### **3. 🐳 docker-validation** (Après checks précédents)
+```yaml
+Dépendances: needs: [backend-checks, frontend-checks]
+- Validation syntaxe Docker Compose
+- Build des images Docker
+- Démarrage stack complète
+- Tests endpoints API (/health, /test, /)
+- Tests accessibilité frontend
+- Cleanup automatique
+```
 
-4. **🔒 Security Scanning** (PR uniquement)
-   - Scan de vulnérabilités avec Trivy
-   - Analyse SARIF pour GitHub Security
+#### **4. 🔒 security-scan** (PR uniquement)
+```yaml
+Condition: if: github.event_name == 'pull_request'
+- Scan vulnérabilités avec Trivy
+- Rapport SARIF vers GitHub Security
+- Upload toujours (même échec)
+```
 
-5. **⚡ Performance Tests** (PR uniquement)
-   - Tests de charge avec Apache Bench
-   - Validation des temps de réponse
+#### **5. ⚡ performance-test** (PR uniquement)
+```yaml
+Condition: if: github.event_name == 'pull_request'
+- Installation Apache Bench
+- Tests de charge: 100 req, 10 concurrentes
+- Endpoints: /api/health et /api/test
+- Cleanup automatique
+```
 
-### Déclenchement
+#### **6. 🚀 deployment-ready** (Main uniquement)
+```yaml
+Condition: if: github.ref == 'refs/heads/main'
+Dépendances: needs: [backend-checks, frontend-checks, docker-validation]
+- Marquage déploiement prêt
+- Rapport résumé GitHub Actions
+```
 
-- **Push** sur `main` ou `dev`
-- **Pull Requests** vers `main` ou `dev`
-- **Sécurité et performance** : PR uniquement
+### Déclenchement et Conditions
 
-### Statut requis
+| Événement | Jobs Exécutés | Condition |
+|-----------|----------------|-----------|
+| **Push main/dev** | backend + frontend + docker + deploy | Automatique |
+| **PR main/dev** | Tous les jobs | Automatique |
+| **Security scan** | PR uniquement | `github.event_name == 'pull_request'` |
+| **Perf tests** | PR uniquement | `github.event_name == 'pull_request'` |
+| **Deploy ready** | Main uniquement | `github.ref == 'refs/heads/main'` |
 
-✅ Tous les jobs doivent passer pour permettre le merge
-🚫 Échec d'un job = merge bloqué automatiquement
+### Métriques de Performance
 
-### Badges de statut
+- **Temps total estimé** : 15-20 minutes (30 min max)
+- **Jobs parallèles** : `backend-checks` et `frontend-checks`
+- **Cache optimisé** : node_modules réutilisées
+- **Cleanup automatique** : Containers supprimés après tests
+
+### Statut Requis
+
+✅ **Tous les jobs doivent réussir** pour permettre le merge
+🚫 **Échec d'un job** = merge bloqué automatiquement
+👀 **Rapports détaillés** accessibles dans l'onglet "Actions"
+
+### Badges de Statut
 
 - [![CI/CD Pipeline](https://github.com/sergeimlk/GymArtMicroSass/actions/workflows/ci.yml/badge.svg)](https://github.com/sergeimlk/GymArtMicroSass/actions/workflows/ci.yml) - Statut du pipeline
 - [![Quality Gate](https://img.shields.io/badge/Quality%20Gate-Passing-brightgreen)](https://github.com/sergeimlk/GymArtMicroSass) - Qualité du code
